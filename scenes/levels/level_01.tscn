@@ -1,0 +1,42 @@
+[gd_scene load_steps=6 format=3]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ground"]
+size = Vector2(40, 40)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_green"]
+albedo_color = Color(0.2, 0.6, 0.2, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_2x2x2"]
+size = Vector3(2, 2, 2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_blue"]
+albedo_color = Color(0.2, 0.4, 0.9, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_red"]
+albedo_color = Color(0.9, 0.2, 0.2, 1)
+
+[node name="Level01" type="Node3D"]
+
+[node name="Ground" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_ground")
+surface_material_override/0 = SubResource("StandardMaterial3D_green")
+
+[node name="SunLight" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.573576, -0.819152, 0, 0.819152, 0.573576, 0, 0, 0)
+shadow_enabled = true
+
+[node name="PlayerBase" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 1, 0)
+mesh = SubResource("BoxMesh_2x2x2")
+surface_material_override/0 = SubResource("StandardMaterial3D_blue")
+
+[node name="EnemySpawn" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 1, 0)
+mesh = SubResource("BoxMesh_2x2x2")
+surface_material_override/0 = SubResource("StandardMaterial3D_red")
+
+[node name="MainCamera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0, -1, 0, 1, 0, 0, 20, 0)
+projection = 1
+current = true
+size = 30.0
