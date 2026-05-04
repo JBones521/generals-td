@@ -1,7 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://ci0uet14qr6ut"]
+[gd_scene format=3 uid="uid://ci0uet14qr6ut"]
 
-[ext_resource type="Script" path="res://scripts/path_visualizer.gd" id="1_pathvis"]
+[ext_resource type="Script" uid="uid://cxs4wpqrxf0nw" path="res://scripts/path_visualizer.gd" id="1_pathvis"]
 [ext_resource type="Resource" path="res://scenes/levels/path_a.tres" id="2_patha"]
+[ext_resource type="Script" uid="uid://bfaqi8fipv1f7" path="res://scripts/path_data.gd" id="2_uvc87"]
 [ext_resource type="Resource" path="res://scenes/levels/path_b.tres" id="3_pathb"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sky"]
@@ -13,7 +14,6 @@ sky_material = SubResource("ProceduralSkyMaterial_sky")
 background_mode = 2
 sky = SubResource("Sky_main")
 ambient_light_source = 3
-ambient_light_energy = 1.0
 tonemap_mode = 2
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_ground"]
@@ -32,13 +32,14 @@ albedo_color = Color(0.2, 0.4, 0.9, 1)
 albedo_color = Color(0.9, 0.2, 0.2, 1)
 
 [node name="Level01" type="Node3D" unique_id=1512329578]
+transform = Transform3D(0.9981531, 0.014394628, 0.05901907, -0.0052347817, 0.9882883, -0.1525088, -0.060523167, 0.15191823, 0.98653847, 0.38716984, 1.9073486e-06, 0.16686821)
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1808850873]
 environment = SubResource("Environment_main")
 
-[node name="Paths" type="Node3D" parent="."]
+[node name="Paths" type="Node3D" parent="." unique_id=348646230]
 script = ExtResource("1_pathvis")
-paths = Array[PathData]([ExtResource("2_patha"), ExtResource("3_pathb")])
+paths = Array[ExtResource("2_uvc87")]([ExtResource("2_patha"), ExtResource("3_pathb")])
 
 [node name="Ground" type="MeshInstance3D" parent="." unique_id=1114181419]
 mesh = SubResource("PlaneMesh_ground")
