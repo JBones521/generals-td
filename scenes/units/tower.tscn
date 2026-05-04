@@ -1,0 +1,43 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/tower.gd" id="1_tower"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_base"]
+top_radius = 1.0
+bottom_radius = 1.0
+height = 2.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dark_gray"]
+albedo_color = Color(0.3, 0.3, 0.3, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_gun"]
+size = Vector3(0.5, 0.5, 1.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_light_gray"]
+albedo_color = Color(0.7, 0.7, 0.7, 1)
+
+[sub_resource type="TorusMesh" id="TorusMesh_range"]
+inner_radius = 9.9
+outer_radius = 10.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_range"]
+transparency = 1
+albedo_color = Color(1, 1, 0, 0.4)
+
+[node name="Tower" type="Node3D"]
+script = ExtResource("1_tower")
+
+[node name="Base" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("CylinderMesh_base")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_gray")
+
+[node name="Gun" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+mesh = SubResource("BoxMesh_gun")
+surface_material_override/0 = SubResource("StandardMaterial3D_light_gray")
+
+[node name="RangeIndicator" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+mesh = SubResource("TorusMesh_range")
+surface_material_override/0 = SubResource("StandardMaterial3D_range")
