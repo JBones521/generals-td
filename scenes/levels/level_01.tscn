@@ -1,4 +1,8 @@
-[gd_scene format=3 uid="uid://ci0uet14qr6ut"]
+[gd_scene load_steps=12 format=3 uid="uid://ci0uet14qr6ut"]
+
+[ext_resource type="Script" path="res://scripts/path_visualizer.gd" id="1_pathvis"]
+[ext_resource type="Resource" path="res://scenes/levels/path_a.tres" id="2_patha"]
+[ext_resource type="Resource" path="res://scenes/levels/path_b.tres" id="3_pathb"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sky"]
 
@@ -31,6 +35,10 @@ albedo_color = Color(0.9, 0.2, 0.2, 1)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_main")
+
+[node name="Paths" type="Node3D" parent="."]
+script = ExtResource("1_pathvis")
+paths = Array[PathData]([ExtResource("2_patha"), ExtResource("3_pathb")])
 
 [node name="Ground" type="MeshInstance3D" parent="." unique_id=1114181419]
 mesh = SubResource("PlaneMesh_ground")

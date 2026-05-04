@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="PathData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/path_data.gd" id="1_pathdata"]
+
+[resource]
+script = ExtResource("1_pathdata")
+path_name = "path_a"
+waypoints = PackedVector3Array(15, 0, -8, 0, 0, -8, -15, 0, -8)
+debug_color = Color(0, 1, 1, 1)
