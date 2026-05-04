@@ -4,6 +4,8 @@
 [ext_resource type="Resource" path="res://scenes/levels/path_a.tres" id="2_patha"]
 [ext_resource type="Script" uid="uid://bfaqi8fipv1f7" path="res://scripts/path_data.gd" id="2_uvc87"]
 [ext_resource type="Resource" path="res://scenes/levels/path_b.tres" id="3_pathb"]
+[ext_resource type="Script" path="res://scripts/enemy_spawner.gd" id="4_spawner"]
+[ext_resource type="PackedScene" path="res://scenes/units/enemy.tscn" id="5_enemy"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sky"]
 
@@ -59,6 +61,12 @@ surface_material_override/0 = SubResource("StandardMaterial3D_blue")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 1, 0)
 mesh = SubResource("BoxMesh_2x2x2")
 surface_material_override/0 = SubResource("StandardMaterial3D_red")
+
+[node name="EnemySpawner" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, 0)
+script = ExtResource("4_spawner")
+enemy_scene = ExtResource("5_enemy")
+available_paths = Array[ExtResource("2_uvc87")]([ExtResource("2_patha"), ExtResource("3_pathb")])
 
 [node name="MainCamera" type="Camera3D" parent="." unique_id=250446486]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 20, 0)
