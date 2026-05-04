@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://scripts/tower.gd" id="1_tower"]
 
@@ -25,6 +25,10 @@ outer_radius = 10.0
 transparency = 1
 albedo_color = Color(1, 1, 0, 0.4)
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_detect"]
+resource_local_to_scene = true
+radius = 10.0
+
 [node name="Tower" type="Node3D"]
 script = ExtResource("1_tower")
 
@@ -42,3 +46,9 @@ surface_material_override/0 = SubResource("StandardMaterial3D_light_gray")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
 mesh = SubResource("TorusMesh_range")
 surface_material_override/0 = SubResource("StandardMaterial3D_range")
+
+[node name="DetectionArea" type="Area3D" parent="."]
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionArea"]
+shape = SubResource("SphereShape3D_detect")

@@ -2,9 +2,22 @@ class_name Enemy
 extends CharacterBody3D
 
 @export var move_speed: float = 4.0
+@export var max_health: float = 30.0
 
+var current_health: float
 var _path: PathData
 var _current_waypoint_index: int = 0
+
+
+func _ready() -> void:
+	current_health = max_health
+	add_to_group("enemies")
+
+
+func take_damage(amount: float) -> void:
+	current_health -= amount
+	if current_health <= 0.0:
+		queue_free()
 
 
 func assign_path(path: PathData) -> void:
