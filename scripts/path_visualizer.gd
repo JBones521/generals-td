@@ -2,38 +2,69 @@
 class_name PathVisualizer
 extends Node3D
 
+const _OWNED_META: String = "path_visualizer_owned"
+
 @export var paths: Array[PathData] = []:
 	set(value):
+		_disconnect_path_signals()
 		paths = value
-		if is_inside_tree():
-			_rebuild()
+		_connect_path_signals()
+		_request_rebuild()
 
 @export var line_height: float = 0.2:
 	set(value):
 		line_height = value
-		if is_inside_tree():
-			_rebuild()
+		_request_rebuild()
 
 
 func _ready() -> void:
+	_connect_path_signals()
 	_rebuild()
 
 
-func _rebuild() -> void:
-	for child in get_children():
-		if child.has_meta("path_visualizer_owned"):
-			child.queue_free()
+func _exit_tree() -> void:
+	_disconnect_path_signals()
 
+
+func _request_rebuild() -> void:
+	if not is_inside_tree():
+		return
+	call_deferred("_rebuild")
+
+
+func _rebuild() -> void:
+	if not is_inside_tree():
+		return
+	_clear_owned_children()
 	for path in paths:
 		if path == null or path.waypoints.size() < 2:
 			continue
 		_build_line(path)
 
 
+func _clear_owned_children() -> void:
+	for child in get_children():
+		if child.has_meta(_OWNED_META):
+			remove_child(child)
+			child.queue_free()
+
+
+func _connect_path_signals() -> void:
+	for path in paths:
+		if path != null and not path.changed.is_connected(_request_rebuild):
+			path.changed.connect(_request_rebuild)
+
+
+func _disconnect_path_signals() -> void:
+	for path in paths:
+		if path != null and path.changed.is_connected(_request_rebuild):
+			path.changed.disconnect(_request_rebuild)
+
+
 func _build_line(path: PathData) -> void:
 	var mesh_instance := MeshInstance3D.new()
 	mesh_instance.name = "PathLine_" + (path.path_name if path.path_name != "" else "unnamed")
-	mesh_instance.set_meta("path_visualizer_owned", true)
+	mesh_instance.set_meta(_OWNED_META, true)
 
 	var immediate_mesh := ImmediateMesh.new()
 	var material := StandardMaterial3D.new()
@@ -51,5 +82,3 @@ func _build_line(path: PathData) -> void:
 
 	mesh_instance.mesh = immediate_mesh
 	add_child(mesh_instance)
-	if Engine.is_editor_hint() and get_tree() != null and get_tree().edited_scene_root != null:
-		mesh_instance.owner = get_tree().edited_scene_root
