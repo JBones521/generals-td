@@ -17,6 +17,7 @@ size = Vector3(0.5, 0.5, 1.5)
 albedo_color = Color(0.7, 0.7, 0.7, 1)
 
 [sub_resource type="TorusMesh" id="TorusMesh_range"]
+resource_local_to_scene = true
 inner_radius = 9.9
 outer_radius = 10.0
 
