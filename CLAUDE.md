@@ -3,6 +3,9 @@
 ## Overview
 A top-down 3D tower defense game inspired by Command & Conquer Generals. Built in Godot 4.x.
 
+## Design Authority
+The complete game design lives in docs/DESIGN.md. That document defines vision, faction identities, tower/enemy catalogs, economy, and roadmap. Treat it as the source of truth for creative decisions. CLAUDE.md (this file) is operational guidance for working in the repo. DESIGN.md is the design itself. When implementing features, check DESIGN.md to understand the intent, not just the immediate request.
+
 ## Gameplay
 - View: Top-down 3D, fixed camera
 - Style: Branching path tower defense (multiple enemy routes, choke points)
