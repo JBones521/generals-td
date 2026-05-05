@@ -5,6 +5,7 @@ enum TargetingStrategy {
 	FIRST_IN_RANGE,
 }
 
+@export var tower_data: TowerData
 @export var tower_name: String = "Basic Tower"
 @export var attack_range: float = 10.0
 @export var fire_rate: float = 1.0
@@ -18,6 +19,12 @@ var _time_since_last_shot: float = 0.0
 
 
 func _ready() -> void:
+	if tower_data != null:
+		attack_range = tower_data.attack_range
+		fire_rate = tower_data.fire_rate
+		damage = tower_data.damage
+		if tower_data.display_name != "":
+			tower_name = tower_data.display_name
 	var torus := _apply_range_to_indicator()
 	var sphere := _apply_range_to_detection_area()
 	if torus == null:
@@ -26,7 +33,7 @@ func _ready() -> void:
 		push_error("[Tower] DetectionArea/SphereShape3D missing — detection radius not synced")
 	var torus_outer: float = torus.outer_radius if torus != null else -1.0
 	var sphere_radius: float = sphere.radius if sphere != null else -1.0
-	print("[Tower] attack_range=", attack_range, " torus_outer=", torus_outer, " sphere_radius=", sphere_radius)
+	print("[Tower] ", tower_name, " attack_range=", attack_range, " torus_outer=", torus_outer, " sphere_radius=", sphere_radius)
 
 
 func _apply_range_to_indicator() -> TorusMesh:
@@ -89,8 +96,16 @@ func _select_target() -> Node3D:
 
 
 func _fire_at(target: Node3D) -> void:
+	var dmg: float = damage
+	var enemy_target := target as Enemy
+	if tower_data != null and enemy_target != null:
+		match enemy_target.enemy_type:
+			"infantry":
+				dmg = damage * tower_data.damage_vs_infantry_mult
+			"vehicle":
+				dmg = damage * tower_data.damage_vs_vehicle_mult
 	if target.has_method("take_damage"):
-		target.take_damage(damage)
+		target.take_damage(dmg)
 	_show_tracer(target.global_position)
 
 

@@ -1,10 +1,12 @@
 class_name Enemy
 extends CharacterBody3D
 
+@export var enemy_data: EnemyData
 @export var move_speed: float = 4.0
 @export var max_health: float = 30.0
 @export var damage_on_reach_base: int = 1
 
+var enemy_type: String = "vehicle"
 var current_health: float
 var _path: PathData
 var _current_waypoint_index: int = 0
@@ -12,6 +14,11 @@ var _is_dying: bool = false
 
 
 func _ready() -> void:
+	if enemy_data != null:
+		max_health = enemy_data.max_health
+		move_speed = enemy_data.move_speed
+		damage_on_reach_base = enemy_data.damage_to_base
+		enemy_type = enemy_data.enemy_type
 	current_health = max_health
 	add_to_group("enemies")
 
@@ -28,6 +35,8 @@ func take_damage(amount: float) -> void:
 	current_health -= amount
 	if current_health <= 0.0:
 		_is_dying = true
+		if enemy_data != null:
+			GameState.add_credits(enemy_data.bounty)
 		GameState.on_enemy_killed()
 		queue_free()
 

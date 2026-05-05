@@ -18,8 +18,21 @@ offset_left = 20.0
 offset_top = 20.0
 offset_right = 260.0
 offset_bottom = 50.0
+mouse_filter = 2
 text = "Base: 20 / 20"
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+
+[node name="CreditsLabel" type="Label" parent="."]
+layout_mode = 1
+offset_left = 20.0
+offset_top = 55.0
+offset_right = 260.0
+offset_bottom = 85.0
+mouse_filter = 2
+text = "Credits: 100"
+theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
 
@@ -31,6 +44,7 @@ offset_left = -120.0
 offset_top = 20.0
 offset_right = 120.0
 offset_bottom = 50.0
+mouse_filter = 2
 text = "Wave: - / 5"
 horizontal_alignment = 1
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -45,6 +59,7 @@ offset_left = -240.0
 offset_top = 20.0
 offset_right = -20.0
 offset_bottom = 50.0
+mouse_filter = 2
 text = "Enemies: 0"
 horizontal_alignment = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
@@ -61,9 +76,66 @@ offset_left = -300.0
 offset_top = -30.0
 offset_right = 300.0
 offset_bottom = 30.0
+mouse_filter = 2
 text = "Press N to start Wave 1"
 horizontal_alignment = 1
 vertical_alignment = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+
+[node name="BuildHintLabel" type="Label" parent="."]
+visible = false
+layout_mode = 1
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -350.0
+offset_top = -130.0
+offset_right = 350.0
+offset_bottom = -100.0
+mouse_filter = 2
+text = "Left-click to place, Right-click or Esc to cancel"
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(1, 1, 0.4, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+
+[node name="TowerRow" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_top = -90.0
+offset_right = 400.0
+offset_bottom = -50.0
+mouse_filter = 2
+alignment = 1
+theme_override_constants/separation = 40
+
+[node name="PatriotLabel" type="Label" parent="TowerRow"]
+layout_mode = 2
+mouse_filter = 2
+text = "[1] Patriot — 75c"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+
+[node name="SentryLabel" type="Label" parent="TowerRow"]
+layout_mode = 2
+mouse_filter = 2
+text = "[2] Sentry Drone — 50c"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+
+[node name="FireBaseLabel" type="Label" parent="TowerRow"]
+layout_mode = 2
+mouse_filter = 2
+text = "[3] Fire Base — 120c"
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4

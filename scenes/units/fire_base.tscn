@@ -1,0 +1,52 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://scripts/tower.gd" id="1_tower"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_base"]
+size = Vector3(3, 2, 3)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dark_gray"]
+albedo_color = Color(0.25, 0.25, 0.28, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_gun"]
+size = Vector3(1, 1, 2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mid_gray"]
+albedo_color = Color(0.55, 0.55, 0.6, 1)
+
+[sub_resource type="TorusMesh" id="TorusMesh_range"]
+resource_local_to_scene = true
+inner_radius = 6.9
+outer_radius = 7.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_range"]
+transparency = 1
+albedo_color = Color(1, 0.2, 0.2, 0.4)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_detect"]
+resource_local_to_scene = true
+radius = 7.0
+
+[node name="Tower" type="Node3D"]
+script = ExtResource("1_tower")
+
+[node name="Base" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+mesh = SubResource("BoxMesh_base")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_gray")
+
+[node name="Gun" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
+mesh = SubResource("BoxMesh_gun")
+surface_material_override/0 = SubResource("StandardMaterial3D_mid_gray")
+
+[node name="RangeIndicator" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)
+mesh = SubResource("TorusMesh_range")
+surface_material_override/0 = SubResource("StandardMaterial3D_range")
+
+[node name="DetectionArea" type="Area3D" parent="."]
+monitorable = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionArea"]
+shape = SubResource("SphereShape3D_detect")

@@ -48,6 +48,9 @@ func _spawn_wave(wave: WaveData) -> void:
 	if spawner == null:
 		push_error("[WaveManager] cannot spawn — spawner is null")
 		return
+	if wave.enemy_data == null:
+		push_error("[WaveManager] wave.enemy_data is null — cannot spawn")
+		return
 	var paths: Array[PathData] = wave.paths_to_use
 	if paths.is_empty():
 		print("[WaveManager] wave.paths_to_use empty, falling back to spawner.available_paths")
@@ -55,14 +58,14 @@ func _spawn_wave(wave: WaveData) -> void:
 	if paths.is_empty():
 		push_error("[WaveManager] cannot spawn — no paths available")
 		return
-	print("[WaveManager] spawning %d enemies across %d paths" % [wave.enemy_count, paths.size()])
+	print("[WaveManager] spawning %d %s across %d paths" % [wave.enemy_count, wave.enemy_data.enemy_id, paths.size()])
 	for i in range(wave.enemy_count):
 		if not is_inside_tree():
 			print("[WaveManager] aborting spawn loop — manager left tree")
 			return
 		var path := paths[i % paths.size()]
 		print("[WaveManager] spawn %d/%d on path '%s'" % [i + 1, wave.enemy_count, path.path_name if path != null else "<null>"])
-		spawner.spawn_enemy(path, wave.enemy_health_multiplier, wave.enemy_speed_multiplier, wave.damage_to_base)
+		spawner.spawn_enemy(wave.enemy_data, path, wave.enemy_health_multiplier, wave.enemy_speed_multiplier)
 		if i < wave.enemy_count - 1:
 			await get_tree().create_timer(wave.spawn_interval).timeout
 	print("[WaveManager] spawn loop complete for this wave")

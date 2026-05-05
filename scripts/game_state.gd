@@ -8,11 +8,14 @@ enum State {
 	DEFEAT,
 }
 
+const STARTING_CREDITS: int = 100
+
 signal state_changed(new_state)
 signal wave_started(wave_index, total_waves)
 signal wave_completed(wave_index)
 signal base_health_changed(current, max)
 signal enemies_remaining_changed(count)
+signal credits_changed(new_amount)
 
 var current_state: State = State.PRE_GAME
 var current_wave_index: int = -1
@@ -20,6 +23,7 @@ var total_waves: int = 0
 var base_max_health: int = 20
 var base_current_health: int = 20
 var enemies_remaining_in_wave: int = 0
+var credits: int = STARTING_CREDITS
 
 
 func start_next_wave() -> void:
@@ -28,6 +32,8 @@ func start_next_wave() -> void:
 	if current_wave_index + 1 >= total_waves:
 		return
 	current_wave_index += 1
+	var stipend: int = 25 + current_wave_index * 10
+	add_credits(stipend)
 	_set_state(State.WAVE_ACTIVE)
 	wave_started.emit(current_wave_index, total_waves)
 
@@ -56,14 +62,35 @@ func on_enemy_killed() -> void:
 		wave_completed.emit(current_wave_index)
 
 
+func add_credits(amount: int) -> void:
+	if amount <= 0:
+		return
+	credits += amount
+	credits_changed.emit(credits)
+
+
+func spend_credits(amount: int) -> bool:
+	if amount < 0 or credits < amount:
+		return false
+	credits -= amount
+	credits_changed.emit(credits)
+	return true
+
+
+func can_afford(amount: int) -> bool:
+	return credits >= amount
+
+
 func reset_game() -> void:
 	current_state = State.PRE_GAME
 	current_wave_index = -1
 	base_current_health = base_max_health
 	enemies_remaining_in_wave = 0
+	credits = STARTING_CREDITS
 	state_changed.emit(current_state)
 	base_health_changed.emit(base_current_health, base_max_health)
 	enemies_remaining_changed.emit(0)
+	credits_changed.emit(credits)
 
 
 func _set_state(new_state: State) -> void:
