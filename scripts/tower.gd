@@ -18,21 +18,46 @@ var _time_since_last_shot: float = 0.0
 
 
 func _ready() -> void:
-	_update_range_indicator()
-	_setup_detection_area()
+	var torus := _apply_range_to_indicator()
+	var sphere := _apply_range_to_detection_area()
+	if torus == null:
+		push_error("[Tower] RangeIndicator/TorusMesh missing — visual range not synced")
+	if sphere == null:
+		push_error("[Tower] DetectionArea/SphereShape3D missing — detection radius not synced")
+	var torus_outer: float = torus.outer_radius if torus != null else -1.0
+	var sphere_radius: float = sphere.radius if sphere != null else -1.0
+	print("[Tower] attack_range=", attack_range, " torus_outer=", torus_outer, " sphere_radius=", sphere_radius)
 
 
-func _setup_detection_area() -> void:
+func _apply_range_to_indicator() -> TorusMesh:
+	var indicator := get_node_or_null("RangeIndicator") as MeshInstance3D
+	if indicator == null:
+		return null
+	indicator.visible = show_range_indicator
+	var torus := indicator.mesh as TorusMesh
+	if torus == null:
+		return null
+	torus.outer_radius = attack_range
+	torus.inner_radius = max(attack_range - 0.1, 0.0)
+	return torus
+
+
+func _apply_range_to_detection_area() -> SphereShape3D:
 	var area := get_node_or_null("DetectionArea") as Area3D
 	if area == null:
-		return
+		return null
+	if not area.body_entered.is_connected(_on_body_entered):
+		area.body_entered.connect(_on_body_entered)
+	if not area.body_exited.is_connected(_on_body_exited):
+		area.body_exited.connect(_on_body_exited)
 	var collision_shape := area.get_node_or_null("CollisionShape3D") as CollisionShape3D
-	if collision_shape != null:
-		var sphere := collision_shape.shape as SphereShape3D
-		if sphere != null:
-			sphere.radius = attack_range
-	area.body_entered.connect(_on_body_entered)
-	area.body_exited.connect(_on_body_exited)
+	if collision_shape == null:
+		return null
+	var sphere := collision_shape.shape as SphereShape3D
+	if sphere == null:
+		return null
+	sphere.radius = attack_range
+	return sphere
 
 
 func _process(delta: float) -> void:
@@ -99,15 +124,3 @@ func _on_body_entered(body: Node) -> void:
 func _on_body_exited(body: Node) -> void:
 	if body is Node3D:
 		enemies_in_range.erase(body)
-
-
-func _update_range_indicator() -> void:
-	var indicator := get_node_or_null("RangeIndicator") as MeshInstance3D
-	if indicator == null:
-		return
-	indicator.visible = show_range_indicator
-	var torus := indicator.mesh as TorusMesh
-	if torus == null:
-		return
-	torus.outer_radius = attack_range
-	torus.inner_radius = max(attack_range - 0.1, 0.0)
