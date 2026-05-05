@@ -5,7 +5,7 @@ signal tower_selected_changed(tower_data)
 
 @export var available_towers: Array[TowerData] = []
 @export var paths: Array[PathData] = []
-@export var ground_layer_mask: int = 1
+@export var ground_layer_mask: int = 2
 @export var min_distance_to_path: float = 2.0
 @export var min_tower_spacing: float = 2.0
 

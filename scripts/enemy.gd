@@ -20,6 +20,7 @@ func _ready() -> void:
 		damage_on_reach_base = enemy_data.damage_to_base
 		enemy_type = enemy_data.enemy_type
 	current_health = max_health
+	motion_mode = CharacterBody3D.MOTION_MODE_FLOATING
 	add_to_group("enemies")
 
 
@@ -79,11 +80,14 @@ func _physics_process(delta: float) -> void:
 		_current_waypoint_index += 1
 		if _current_waypoint_index >= _path.waypoints.size():
 			_on_path_completed()
-		return
+			return
+	else:
+		var direction := to_target / distance
+		velocity = direction * move_speed
+		velocity.y = 0.0
+		move_and_slide()
 
-	var direction := to_target / distance
-	velocity = direction * move_speed
-	move_and_slide()
+	global_position.y = 1.0
 
 
 func _on_path_completed() -> void:
