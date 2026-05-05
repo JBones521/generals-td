@@ -60,6 +60,14 @@ func _physics_process(delta: float) -> void:
 	if _current_waypoint_index >= _path.waypoints.size():
 		return
 
+	if Engine.get_physics_frames() % 60 == 0:
+		var target_str: String
+		if _current_waypoint_index < _path.waypoints.size():
+			target_str = str(_path.waypoints[_current_waypoint_index])
+		else:
+			target_str = "OOB"
+		print("[Enemy] ", name, " pos=", global_position, " target_idx=", _current_waypoint_index, " target=", target_str, " path='", _path.path_name, "'")
+
 	var target := _path.waypoints[_current_waypoint_index]
 	target.y = 1.0
 	var to_target := target - global_position
