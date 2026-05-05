@@ -1,0 +1,62 @@
+[gd_resource type="Resource" script_class="LevelWaves" load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://scripts/level_waves.gd" id="1_lw"]
+[ext_resource type="Script" path="res://scripts/wave_data.gd" id="2_wd"]
+[ext_resource type="PackedScene" path="res://scenes/units/enemy.tscn" id="3_enemy"]
+[ext_resource type="Script" path="res://scripts/path_data.gd" id="4_pd"]
+[ext_resource type="Resource" path="res://scenes/levels/path_a.tres" id="5_patha"]
+[ext_resource type="Resource" path="res://scenes/levels/path_b.tres" id="6_pathb"]
+
+[sub_resource type="Resource" id="Wave_1"]
+script = ExtResource("2_wd")
+enemy_scene = ExtResource("3_enemy")
+enemy_count = 5
+spawn_interval = 1.5
+enemy_health_multiplier = 1.0
+enemy_speed_multiplier = 1.0
+paths_to_use = Array[ExtResource("4_pd")]([ExtResource("5_patha"), ExtResource("6_pathb")])
+damage_to_base = 1
+
+[sub_resource type="Resource" id="Wave_2"]
+script = ExtResource("2_wd")
+enemy_scene = ExtResource("3_enemy")
+enemy_count = 8
+spawn_interval = 1.2
+enemy_health_multiplier = 1.0
+enemy_speed_multiplier = 1.0
+paths_to_use = Array[ExtResource("4_pd")]([ExtResource("5_patha"), ExtResource("6_pathb")])
+damage_to_base = 1
+
+[sub_resource type="Resource" id="Wave_3"]
+script = ExtResource("2_wd")
+enemy_scene = ExtResource("3_enemy")
+enemy_count = 10
+spawn_interval = 1.0
+enemy_health_multiplier = 1.5
+enemy_speed_multiplier = 1.0
+paths_to_use = Array[ExtResource("4_pd")]([ExtResource("5_patha"), ExtResource("6_pathb")])
+damage_to_base = 1
+
+[sub_resource type="Resource" id="Wave_4"]
+script = ExtResource("2_wd")
+enemy_scene = ExtResource("3_enemy")
+enemy_count = 12
+spawn_interval = 0.8
+enemy_health_multiplier = 1.5
+enemy_speed_multiplier = 1.2
+paths_to_use = Array[ExtResource("4_pd")]([ExtResource("5_patha"), ExtResource("6_pathb")])
+damage_to_base = 1
+
+[sub_resource type="Resource" id="Wave_5"]
+script = ExtResource("2_wd")
+enemy_scene = ExtResource("3_enemy")
+enemy_count = 15
+spawn_interval = 0.7
+enemy_health_multiplier = 2.0
+enemy_speed_multiplier = 1.3
+paths_to_use = Array[ExtResource("4_pd")]([ExtResource("5_patha"), ExtResource("6_pathb")])
+damage_to_base = 1
+
+[resource]
+script = ExtResource("1_lw")
+waves = Array[ExtResource("2_wd")]([SubResource("Wave_1"), SubResource("Wave_2"), SubResource("Wave_3"), SubResource("Wave_4"), SubResource("Wave_5")])

@@ -5,16 +5,13 @@ extends Node3D
 @export var available_paths: Array[PathData] = []
 
 
-func spawn_enemy() -> void:
-	if enemy_scene == null or available_paths.is_empty():
+func spawn_enemy(path: PathData, health_mult: float = 1.0, speed_mult: float = 1.0, damage_to_base: int = 1) -> void:
+	if enemy_scene == null or path == null:
 		return
-	var path: PathData = available_paths.pick_random()
-	var enemy := enemy_scene.instantiate()
+	var enemy := enemy_scene.instantiate() as Enemy
+	if enemy == null:
+		return
 	get_parent().add_child(enemy)
+	enemy.apply_wave_modifiers(health_mult, speed_mult)
+	enemy.damage_on_reach_base = damage_to_base
 	enemy.assign_path(path)
-	print("Spawned enemy on path: ", path.path_name)
-
-
-func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_SPACE:
-		spawn_enemy()
