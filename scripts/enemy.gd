@@ -33,6 +33,7 @@ func take_damage(amount: float) -> void:
 	if _is_dying:
 		return
 	current_health -= amount
+	print("[Enemy] ", name, " took ", amount, " damage. HP now ", current_health, "/", max_health, " at ", global_position)
 	if current_health <= 0.0:
 		_is_dying = true
 		if enemy_data != null:

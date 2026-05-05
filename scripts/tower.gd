@@ -84,18 +84,21 @@ func _process(delta: float) -> void:
 func _prune_invalid_enemies() -> void:
 	var valid: Array[Node3D] = []
 	for e in enemies_in_range:
-		if is_instance_valid(e):
+		if is_instance_valid(e) and not e.is_queued_for_deletion():
 			valid.append(e)
 	enemies_in_range = valid
 
 
 func _select_target() -> Node3D:
-	if enemies_in_range.is_empty():
-		return null
-	return enemies_in_range[0]
+	for e in enemies_in_range:
+		if is_instance_valid(e) and not e.is_queued_for_deletion():
+			return e
+	return null
 
 
 func _fire_at(target: Node3D) -> void:
+	if not is_instance_valid(target) or target.is_queued_for_deletion():
+		return
 	var dmg: float = damage
 	var enemy_target := target as Enemy
 	if tower_data != null and enemy_target != null:
@@ -104,9 +107,11 @@ func _fire_at(target: Node3D) -> void:
 				dmg = damage * tower_data.damage_vs_infantry_mult
 			"vehicle":
 				dmg = damage * tower_data.damage_vs_vehicle_mult
+	var target_pos: Vector3 = target.global_position
+	print("[Tower] ", name, " (", tower_name, ") firing at ", target.name, " at ", target_pos, " damage=", dmg)
 	if target.has_method("take_damage"):
 		target.take_damage(dmg)
-	_show_tracer(target.global_position)
+	_show_tracer(target_pos)
 
 
 func _show_tracer(target_pos: Vector3) -> void:
