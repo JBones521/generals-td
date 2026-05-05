@@ -38,7 +38,8 @@ func assign_path(path: PathData) -> void:
 	if path != null and path.waypoints.size() > 0:
 		var start := path.waypoints[0]
 		start.y = 1.0
-		global_position = start
+		if global_position.distance_to(start) > 0.1:
+			global_position = start
 
 
 func _physics_process(delta: float) -> void:
