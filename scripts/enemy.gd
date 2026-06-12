@@ -35,12 +35,26 @@ func take_damage(amount: float) -> void:
 		return
 	current_health -= amount
 	print("[Enemy] ", name, " took ", amount, " damage. HP now ", current_health, "/", max_health, " at ", global_position)
+	_update_health_bar()
 	if current_health <= 0.0:
 		_is_dying = true
 		if enemy_data != null:
 			GameState.add_credits(enemy_data.bounty)
 		GameState.on_enemy_killed()
 		queue_free()
+
+
+func _update_health_bar() -> void:
+	var bar := get_node_or_null("HealthBar") as Node3D
+	if bar == null:
+		return
+	var fg := bar.get_node_or_null("Foreground") as MeshInstance3D
+	if fg == null:
+		return
+	var ratio: float = clamp(current_health / max_health, 0.0, 1.0) if max_health > 0.0 else 0.0
+	fg.scale.x = max(ratio, 0.0001)
+	fg.position.x = (ratio - 1.0) * 0.5
+	bar.visible = ratio < 1.0
 
 
 func assign_path(path: PathData) -> void:
