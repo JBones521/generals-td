@@ -278,3 +278,60 @@ To anchor everything else: a complete play session is 7 missions = ~30-60 minute
    - Wave clears → credits earned, build/upgrade between waves
 4. Final wave / boss — climactic assault
 5. Victory or defeat screen
+
+## Design v2 — Survival Mode Rework
+
+### Core Reframe: Survival Mode TD
+
+Generals TD is not "Kingdom Rush with C&C aesthetics." It is the Generals survival/economy multiplayer mode, single-player, structured as a tower defense. The player builds infrastructure (Supply Centers, Power Plants, Hackers, Black Markets) AND defenses, scales economy outward, and survives escalating waves. The economy IS the strategy: each "build another defense or another supply line?" decision is the central tension.
+
+### Full Generals Unit Translation
+
+Every Generals unit gets a role: defensive tower, economy building, enemy, hero, Generals' Power, or decorative set dressing. Detailed roster:
+
+[paste the full USA / China / GLA tower rosters, economy buildings, Generals' Powers, and enemy units sections from the previous chat response]
+
+### Economy System
+
+Three layers:
+1. Supply Centers (Layer 1, core early/mid-game): USA Chinook +60/sec, China Truck +50/sec, GLA Stash +40/sec (up to 5 stashes)
+2. Faction-specific late-game (Layer 2): USA Oil Derricks, China Hackers, GLA Black Market
+3. Kill bounties (Layer 3, 10-20% of total income)
+
+### Wave Pacing (TD Best Practices)
+
+- Wave duration: 30-60 seconds active spawning
+- NEVER all-same-enemy waves — always mix at least 2 types
+- Inter-wave pause: 15-30 seconds, with "press N for +25 credit early-start bonus"
+- Next-wave preview shown in HUD
+- Total session: 20-40 min, 20-30 waves
+- Boss waves every 5 waves: Black Lotus, Jarmen Kell, Colonel Burton
+
+### Damage Type Triangle
+
+Tower types: Anti-Infantry / Anti-Vehicle / Anti-Air / Splash-AOE
+Each strong vs specific enemy types, weak vs others
+Player must compose layered defense
+
+### Tower Upgrade Tiers
+
+T1 (placed) → T2 (+25% damage/range, 75% cost) → T3 (unique mechanic, same cost as T2)
+T2 unlocks after wave 5, T3 after wave 10 + tech building (Strategy Center / Propaganda Center / Palace)
+
+### Development Roadmap
+
+Step 8: Playability (health bars, 15 waves, early-start bonus) — SPECIFIED, NOT YET BUILT
+Step 9: Economy rework (Supply Centers replace flat wave stipend)
+Step 10: Tower variety expansion (Avenger, Tomahawk; first aircraft enemy; T2/T3 upgrades)
+Step 11: Generals' Powers (A-10 Strike, Spy Drone, HUD power buttons)
+Step 12: China faction implementation
+Step 13: GLA faction implementation
+Step 14+: Maps, polish, content
+
+### Open Design Questions
+
+1. Power mechanic asymmetry: USA soft / China hard / GLA none — recommended faction-asymmetric
+2. Tower selling: 75% refund recommended, upgrades non-refundable individually
+3. Placement freedom: free placement with path buffer zone (current implementation) is correct
+4. Wave preview detail: count + dominant type ("12 Battlemaster + 8 Red Guard, China assault")
+5. Endless vs fixed: 25 fixed waves = campaign mission; endless mode unlocked after first win

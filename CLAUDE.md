@@ -6,6 +6,8 @@ A top-down 3D tower defense game inspired by Command & Conquer Generals. Built i
 ## Design Authority
 The complete game design lives in docs/DESIGN.md. That document defines vision, faction identities, tower/enemy catalogs, economy, and roadmap. Treat it as the source of truth for creative decisions. CLAUDE.md (this file) is operational guidance for working in the repo. DESIGN.md is the design itself. When implementing features, check DESIGN.md to understand the intent, not just the immediate request.
 
+DESIGN.md has been expanded with v2 — survival mode focus, full Generals unit translation, faction economies. v1 sections retained but v2 is the active design.
+
 ## Gameplay
 - View: Top-down 3D, fixed camera
 - Style: Branching path tower defense (multiple enemy routes, choke points)
