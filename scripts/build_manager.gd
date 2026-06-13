@@ -1,17 +1,20 @@
 class_name BuildManager
 extends Node3D
 
-signal tower_selected_changed(tower_data)
+signal tower_selected_changed(placeable_data)
+signal buildings_changed
 
 @export var available_towers: Array[TowerData] = []
+@export var available_buildings: Array[BuildingData] = []
 @export var paths: Array[PathData] = []
 @export var ground_layer_mask: int = 2
 @export var min_distance_to_path: float = 2.0
 @export var min_tower_spacing: float = 2.0
 
-var selected_tower_data: TowerData = null
-var preview_instance: Tower = null
+var selected_placeable: PlaceableData = null
+var preview_instance: Node3D = null
 var placed_towers: Array[Tower] = []
+var placed_buildings: Array[Node3D] = []
 
 var _preview_indicator_material: StandardMaterial3D
 
@@ -21,19 +24,22 @@ func _unhandled_input(event: InputEvent) -> void:
 		match event.keycode:
 			KEY_1:
 				if available_towers.size() >= 1:
-					_select_tower(available_towers[0])
+					_select_placeable(available_towers[0])
 			KEY_2:
 				if available_towers.size() >= 2:
-					_select_tower(available_towers[1])
+					_select_placeable(available_towers[1])
 			KEY_3:
 				if available_towers.size() >= 3:
-					_select_tower(available_towers[2])
+					_select_placeable(available_towers[2])
+			KEY_4:
+				if available_buildings.size() >= 1:
+					_select_placeable(available_buildings[0])
 			KEY_ESCAPE:
 				if preview_instance != null:
 					_cancel_placement()
 	elif event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_LEFT and preview_instance != null:
-			_try_place_tower()
+			_try_place()
 		elif event.button_index == MOUSE_BUTTON_RIGHT and preview_instance != null:
 			_cancel_placement()
 
@@ -64,15 +70,23 @@ func _raycast_to_ground() -> Variant:
 	return result.position
 
 
-func _select_tower(td: TowerData) -> void:
-	if td == null:
+func count_placed_buildings(id: String) -> int:
+	var count := 0
+	for b in placed_buildings:
+		if is_instance_valid(b) and b.get_meta("placeable_id", "") == id:
+			count += 1
+	return count
+
+
+func _select_placeable(pd: PlaceableData) -> void:
+	if pd == null:
 		return
 	_cancel_placement()
-	selected_tower_data = td
-	_create_preview(td)
-	tower_selected_changed.emit(td)
+	selected_placeable = pd
+	_create_preview(pd)
+	tower_selected_changed.emit(pd)
 	if GameState.DEBUG_LOGGING:
-		print("[BuildManager] selected %s (cost=%d)" % [td.tower_id, td.cost])
+		print("[BuildManager] selected %s (cost=%d)" % [pd.placeable_id, pd.cost])
 
 
 func _cancel_placement() -> void:
@@ -80,21 +94,26 @@ func _cancel_placement() -> void:
 		preview_instance.queue_free()
 		preview_instance = null
 	_preview_indicator_material = null
-	var was_selected := selected_tower_data != null
-	selected_tower_data = null
+	var was_selected := selected_placeable != null
+	selected_placeable = null
 	if was_selected:
 		tower_selected_changed.emit(null)
 
 
-func _create_preview(td: TowerData) -> void:
-	if td == null or td.tower_scene == null:
-		push_error("[BuildManager] cannot create preview — tower_scene missing for %s" % td.tower_id if td != null else "<null>")
+func _create_preview(pd: PlaceableData) -> void:
+	if pd == null or pd.scene == null:
+		push_error("[BuildManager] cannot create preview — scene missing for %s" % (pd.placeable_id if pd != null else "<null>"))
 		return
-	var preview := td.tower_scene.instantiate() as Tower
+	var preview := pd.scene.instantiate() as Node3D
 	if preview == null:
-		push_error("[BuildManager] could not instantiate tower scene for %s" % td.tower_id)
+		push_error("[BuildManager] could not instantiate scene for %s" % pd.placeable_id)
 		return
-	preview.tower_data = td
+	var tower_preview := preview as Tower
+	if tower_preview != null:
+		tower_preview.tower_data = pd as TowerData
+	var hit = _raycast_to_ground()
+	if hit != null:
+		preview.position = hit
 	add_child(preview)
 	preview.set_process(false)
 	preview.set_physics_process(false)
@@ -109,9 +128,7 @@ func _create_preview(td: TowerData) -> void:
 		_preview_indicator_material.albedo_color = Color(0, 1, 0, 0.4)
 		indicator.set_surface_override_material(0, _preview_indicator_material)
 	preview_instance = preview
-	var hit = _raycast_to_ground()
 	if hit != null:
-		preview.global_position = hit
 		_update_preview_color(_is_valid_placement(hit))
 
 
@@ -122,9 +139,9 @@ func _update_preview_color(valid: bool) -> void:
 
 
 func _is_valid_placement(pos: Vector3) -> bool:
-	if selected_tower_data == null:
+	if selected_placeable == null:
 		return false
-	if not GameState.can_afford(selected_tower_data.cost):
+	if not GameState.can_afford(selected_placeable.cost):
 		return false
 	if _min_distance_to_paths(pos) < min_distance_to_path:
 		return false
@@ -133,6 +150,14 @@ func _is_valid_placement(pos: Vector3) -> bool:
 			continue
 		if t.global_position.distance_to(pos) < min_tower_spacing:
 			return false
+	for b in placed_buildings:
+		if not is_instance_valid(b):
+			continue
+		if b.global_position.distance_to(pos) < min_tower_spacing:
+			return false
+	var bd := selected_placeable as BuildingData
+	if bd != null and count_placed_buildings(bd.placeable_id) >= bd.max_count:
+		return false
 	return true
 
 
@@ -165,28 +190,35 @@ func _point_to_segment_distance(p: Vector2, a: Vector2, b: Vector2) -> float:
 	return p.distance_to(closest)
 
 
-func _try_place_tower() -> void:
-	if preview_instance == null or selected_tower_data == null:
+func _try_place() -> void:
+	if preview_instance == null or selected_placeable == null:
 		return
 	var pos: Vector3 = preview_instance.global_position
 	if not _is_valid_placement(pos):
 		if GameState.DEBUG_LOGGING:
 			print("[BuildManager] placement at %s rejected" % pos)
 		return
-	var td := selected_tower_data
-	var cost: int = td.cost
+	var pd := selected_placeable
+	var cost: int = pd.cost
 	if not GameState.spend_credits(cost):
 		if GameState.DEBUG_LOGGING:
 			print("[BuildManager] could not spend %d credits" % cost)
 		return
 	_cancel_placement()
-	var tower := td.tower_scene.instantiate() as Tower
-	if tower == null:
-		push_error("[BuildManager] failed to instantiate placed tower for %s" % td.tower_id)
+	var instance := pd.scene.instantiate() as Node3D
+	if instance == null:
+		push_error("[BuildManager] failed to instantiate placed scene for %s" % pd.placeable_id)
 		return
-	tower.tower_data = td
-	add_child(tower)
-	tower.global_position = pos
-	placed_towers.append(tower)
+	var tower := instance as Tower
+	if tower != null:
+		tower.tower_data = pd as TowerData
+	instance.position = pos
+	instance.set_meta("placeable_id", pd.placeable_id)
+	add_child(instance)
+	if tower != null:
+		placed_towers.append(tower)
+	else:
+		placed_buildings.append(instance)
+		buildings_changed.emit()
 	if GameState.DEBUG_LOGGING:
-		print("[BuildManager] placed %s at %s (cost=%d, credits remaining=%d)" % [td.tower_id, pos, cost, GameState.credits])
+		print("[BuildManager] placed %s at %s (cost=%d, credits remaining=%d)" % [pd.placeable_id, pos, cost, GameState.credits])

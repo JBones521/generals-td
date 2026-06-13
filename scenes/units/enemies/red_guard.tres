@@ -11,5 +11,5 @@ enemy_type = "infantry"
 max_health = 12.0
 move_speed = 6.0
 damage_to_base = 1
-bounty = 3
+bounty = 30
 enemy_scene = ExtResource("2_scene")

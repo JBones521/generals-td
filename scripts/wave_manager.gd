@@ -2,7 +2,7 @@ class_name WaveManager
 extends Node
 
 const COUNTDOWN_DURATION: float = 20.0
-const EARLY_START_BONUS: int = 25
+const EARLY_START_BONUS: int = 250
 
 signal countdown_changed(seconds_remaining: float)
 

@@ -5,12 +5,12 @@
 
 [resource]
 script = ExtResource("1_td")
-tower_id = "usa_sentry"
+placeable_id = "usa_sentry"
 display_name = "Sentry Drone Pad"
-cost = 50
+cost = 500
 attack_range = 8.0
 fire_rate = 3.0
 damage = 4.0
 damage_vs_infantry_mult = 1.5
 damage_vs_vehicle_mult = 0.6
-tower_scene = ExtResource("2_scene")
+scene = ExtResource("2_scene")

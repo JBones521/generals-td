@@ -1,0 +1,83 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://scripts/supply_center.gd" id="1_sc"]
+[ext_resource type="Script" path="res://scripts/visual_spin.gd" id="2_spin"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_warehouse"]
+size = Vector3(2.6, 1.2, 2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_roof"]
+size = Vector3(2.8, 0.15, 2.2)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_pad"]
+top_radius = 1.1
+bottom_radius = 1.1
+height = 0.1
+
+[sub_resource type="TorusMesh" id="TorusMesh_pad_circle"]
+inner_radius = 0.85
+outer_radius = 0.95
+
+[sub_resource type="BoxMesh" id="BoxMesh_chinook_body"]
+size = Vector3(0.5, 0.45, 1.4)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_rotor"]
+top_radius = 0.55
+bottom_radius = 0.55
+height = 0.04
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hull_gray"]
+albedo_color = Color(0.75, 0.78, 0.8, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_accent_blue"]
+albedo_color = Color(0.15, 0.3, 0.55, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dark_metal"]
+albedo_color = Color(0.25, 0.27, 0.3, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_white"]
+albedo_color = Color(0.92, 0.94, 0.95, 1)
+
+[node name="SupplyCenter" type="Node3D"]
+script = ExtResource("1_sc")
+
+[node name="Warehouse" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+mesh = SubResource("BoxMesh_warehouse")
+surface_material_override/0 = SubResource("StandardMaterial3D_hull_gray")
+
+[node name="Roof" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0)
+mesh = SubResource("BoxMesh_roof")
+surface_material_override/0 = SubResource("StandardMaterial3D_accent_blue")
+
+[node name="LandingPad" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.3, 0.05, 0)
+mesh = SubResource("CylinderMesh_pad")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_metal")
+
+[node name="PadCircle" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.3, 0.11, 0)
+mesh = SubResource("TorusMesh_pad_circle")
+surface_material_override/0 = SubResource("StandardMaterial3D_white")
+
+[node name="Chinook" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.3, 0.3, 0)
+
+[node name="Body" type="MeshInstance3D" parent="Chinook"]
+mesh = SubResource("BoxMesh_chinook_body")
+surface_material_override/0 = SubResource("StandardMaterial3D_hull_gray")
+
+[node name="RotorFront" type="MeshInstance3D" parent="Chinook"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 0.55)
+mesh = SubResource("CylinderMesh_rotor")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_metal")
+script = ExtResource("2_spin")
+spin_speed_deg = 900.0
+
+[node name="RotorRear" type="MeshInstance3D" parent="Chinook"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, -0.55)
+mesh = SubResource("CylinderMesh_rotor")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_metal")
+script = ExtResource("2_spin")
+spin_speed_deg = 900.0

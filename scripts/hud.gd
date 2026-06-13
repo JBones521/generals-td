@@ -6,6 +6,7 @@ extends Control
 
 @onready var base_health_label: Label = $BaseHealthLabel
 @onready var credits_label: Label = $CreditsLabel
+@onready var income_label: Label = $IncomeLabel
 @onready var wave_label: Label = $WaveLabel
 @onready var enemies_remaining_label: Label = $EnemiesRemainingLabel
 @onready var status_label: Label = $StatusLabel
@@ -16,7 +17,7 @@ extends Control
 var build_manager: BuildManager
 var wave_manager: WaveManager
 
-var _selected_tower_data: TowerData = null
+var _selected_tower_data: PlaceableData = null
 var _countdown_remaining: float = 0.0
 
 
@@ -31,6 +32,7 @@ func _ready() -> void:
 		build_manager = get_node_or_null(build_manager_path) as BuildManager
 	if build_manager != null:
 		build_manager.tower_selected_changed.connect(_on_tower_selected_changed)
+		build_manager.buildings_changed.connect(_on_buildings_changed)
 	else:
 		push_error("[HUD] build_manager could not be resolved from path: %s" % build_manager_path)
 	if not wave_manager_path.is_empty():
@@ -49,6 +51,7 @@ func _refresh_all() -> void:
 	_refresh_wave_label()
 	_refresh_status_label()
 	_refresh_tower_labels()
+	_refresh_income_label()
 	_refresh_next_wave_label()
 
 
@@ -142,7 +145,7 @@ func _refresh_next_wave_label() -> void:
 	else:
 		var seconds: int = int(ceil(_countdown_remaining))
 		if seconds > 0:
-			prompt = "Press N (or wait %ds for +25 credits bonus)" % seconds
+			prompt = "Press N (or wait %ds for +250 credits bonus)" % seconds
 		else:
 			prompt = "Starting..."
 	next_wave_label.text = "Next Wave (%d/%d): %s — %s" % [next_idx + 1, GameState.total_waves, summary, prompt]
@@ -151,21 +154,52 @@ func _refresh_next_wave_label() -> void:
 func _refresh_tower_labels() -> void:
 	if build_manager == null or tower_row == null:
 		return
-	var towers: Array[TowerData] = build_manager.available_towers
+	var entries: Array[PlaceableData] = []
+	for td in build_manager.available_towers:
+		entries.append(td)
+	for bd in build_manager.available_buildings:
+		entries.append(bd)
 	for i in range(tower_row.get_child_count()):
 		var label := tower_row.get_child(i) as Label
 		if label == null:
 			continue
-		if i >= towers.size() or towers[i] == null:
+		if i >= entries.size() or entries[i] == null:
 			label.text = ""
 			label.visible = false
 			continue
 		label.visible = true
-		var td: TowerData = towers[i]
-		label.text = "[%d] %s — %dc" % [i + 1, td.display_name, td.cost]
-		if td == _selected_tower_data:
-			label.modulate = Color(1.0, 1.0, 0.0)
-		elif GameState.can_afford(td.cost):
-			label.modulate = Color(1.0, 1.0, 1.0)
+		var pd: PlaceableData = entries[i]
+		var at_cap := false
+		var bd := pd as BuildingData
+		if bd != null:
+			var placed: int = build_manager.count_placed_buildings(bd.placeable_id)
+			at_cap = placed >= bd.max_count
+			label.text = "[%d] %s — %dc (%d/%d)" % [i + 1, bd.display_name, bd.cost, placed, bd.max_count]
 		else:
+			label.text = "[%d] %s — %dc" % [i + 1, pd.display_name, pd.cost]
+		if pd == _selected_tower_data:
+			label.modulate = Color(1.0, 1.0, 0.0)
+		elif at_cap or not GameState.can_afford(pd.cost):
 			label.modulate = Color(0.55, 0.55, 0.55)
+		else:
+			label.modulate = Color(1.0, 1.0, 1.0)
+
+
+func _on_buildings_changed() -> void:
+	_refresh_tower_labels()
+	_refresh_income_label()
+
+
+func _refresh_income_label() -> void:
+	if income_label == null:
+		return
+	if build_manager == null or build_manager.available_buildings.is_empty():
+		income_label.visible = false
+		return
+	var bd: BuildingData = build_manager.available_buildings[0]
+	if bd == null:
+		income_label.visible = false
+		return
+	income_label.visible = true
+	var placed: int = build_manager.count_placed_buildings(bd.placeable_id)
+	income_label.text = "Supply: %d/%d (+%d/%ds)" % [placed, bd.max_count, placed * SupplyCenter.DELIVERY_AMOUNT, int(SupplyCenter.CYCLE_TIME)]

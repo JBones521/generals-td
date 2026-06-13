@@ -427,6 +427,8 @@ Three layers:
 2. Faction-specific late-game (Layer 2): USA Oil Derricks, China Hackers, GLA Black Market
 3. Kill bounties (Layer 3, 10-20% of total income)
 
+Credit scale: Generals-authentic pricing adopted in Step 9 (towers 500-1200, Supply Center 800 with +120/12s Chinook deliveries, max 3). Original draft numbers superseded. Flat wave stipend removed.
+
 ### Wave Pacing (TD Best Practices)
 
 - Wave duration: 30-60 seconds active spawning
@@ -450,7 +452,7 @@ T2 unlocks after wave 5, T3 after wave 10 + tech building (Strategy Center / Pro
 ### Development Roadmap
 
 Step 8: Playability (health bars, 15 waves, early-start bonus) — DONE
-Step 9: Economy rework (Supply Centers replace flat wave stipend)
+Step 9: Economy rework — DONE (power plants moved to Step 9b)
 Step 10: Tower variety expansion (Avenger, Tomahawk; first aircraft enemy; T2/T3 upgrades)
 Step 11: Generals' Powers (A-10 Strike, Spy Drone, HUD power buttons)
 Step 12: China faction implementation

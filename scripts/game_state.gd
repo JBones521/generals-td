@@ -10,7 +10,7 @@ enum State {
 
 const DEBUG_LOGGING: bool = false
 
-const STARTING_CREDITS: int = 100
+const STARTING_CREDITS: int = 1500
 const STARTING_BASE_HEALTH: int = 40
 
 signal state_changed(new_state)
@@ -36,8 +36,6 @@ func start_next_wave() -> void:
 	if current_wave_index + 1 >= total_waves:
 		return
 	current_wave_index += 1
-	var stipend: int = 25 + current_wave_index * 10
-	add_credits(stipend)
 	_set_state(State.WAVE_ACTIVE)
 	wave_started.emit(current_wave_index, total_waves)
 

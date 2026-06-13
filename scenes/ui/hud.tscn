@@ -31,8 +31,20 @@ offset_top = 55.0
 offset_right = 260.0
 offset_bottom = 85.0
 mouse_filter = 2
-text = "Credits: 100"
+text = "Credits: 1500"
 theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+
+[node name="IncomeLabel" type="Label" parent="."]
+layout_mode = 1
+offset_left = 20.0
+offset_top = 90.0
+offset_right = 320.0
+offset_bottom = 120.0
+mouse_filter = 2
+text = "Supply: 0/3 (+0/12s)"
+theme_override_colors/font_color = Color(0.6, 0.85, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
 
@@ -137,7 +149,7 @@ theme_override_constants/separation = 40
 [node name="PatriotLabel" type="Label" parent="TowerRow"]
 layout_mode = 2
 mouse_filter = 2
-text = "[1] Patriot — 75c"
+text = "[1] Patriot — 750c"
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
@@ -145,7 +157,7 @@ theme_override_constants/outline_size = 4
 [node name="SentryLabel" type="Label" parent="TowerRow"]
 layout_mode = 2
 mouse_filter = 2
-text = "[2] Sentry Drone — 50c"
+text = "[2] Sentry Drone — 500c"
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
@@ -153,7 +165,15 @@ theme_override_constants/outline_size = 4
 [node name="FireBaseLabel" type="Label" parent="TowerRow"]
 layout_mode = 2
 mouse_filter = 2
-text = "[3] Fire Base — 120c"
+text = "[3] Fire Base — 1200c"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+
+[node name="SupplyCenterLabel" type="Label" parent="TowerRow"]
+layout_mode = 2
+mouse_filter = 2
+text = "[4] Supply Center — 800c (0/3)"
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4

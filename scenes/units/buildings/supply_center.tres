@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="BuildingData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/building_data.gd" id="1_bd"]
+[ext_resource type="PackedScene" path="res://scenes/units/buildings/supply_center.tscn" id="2_scene"]
+
+[resource]
+script = ExtResource("1_bd")
+placeable_id = "usa_supply_center"
+display_name = "Supply Center"
+cost = 800
+max_count = 3
+scene = ExtResource("2_scene")
