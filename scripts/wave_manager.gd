@@ -3,6 +3,7 @@ extends Node
 
 const COUNTDOWN_DURATION: float = 20.0
 const EARLY_START_BONUS: int = 250
+const DIFFICULTY_CURVE: float = 1.12
 
 signal countdown_changed(seconds_remaining: float)
 
@@ -82,9 +83,10 @@ func _on_wave_started(wave_index: int, _total_waves: int) -> void:
 	var total: int = wave.get_total_count()
 	GameState.enemies_remaining_in_wave = total
 	GameState.enemies_remaining_changed.emit(total)
+	var curve_mult: float = pow(DIFFICULTY_CURVE, wave_index)
 	if GameState.DEBUG_LOGGING:
-		print("[WaveManager] starting wave %d: %s (total=%d, h_mult=%.2f, s_mult=%.2f)" % [wave_index + 1, wave.get_summary(), total, wave.enemy_health_multiplier, wave.enemy_speed_multiplier])
-	_spawn_wave(wave)
+		print("[WaveManager] starting wave %d: %s (total=%d, h_mult=%.2f, s_mult=%.2f, curve_mult=%.2f)" % [wave_index + 1, wave.get_summary(), total, wave.enemy_health_multiplier, wave.enemy_speed_multiplier, curve_mult])
+	_spawn_wave(wave, curve_mult)
 
 
 func _on_wave_completed(_wave_index: int) -> void:
@@ -95,7 +97,7 @@ func _on_wave_completed(_wave_index: int) -> void:
 			print("[WaveManager] starting %d-second pre-wave countdown" % int(COUNTDOWN_DURATION))
 
 
-func _spawn_wave(wave: WaveData) -> void:
+func _spawn_wave(wave: WaveData, curve_mult: float = 1.0) -> void:
 	if spawner == null:
 		push_error("[WaveManager] cannot spawn — spawner is null")
 		return
@@ -121,7 +123,7 @@ func _spawn_wave(wave: WaveData) -> void:
 				return
 			var path := paths[path_index % paths.size()]
 			path_index += 1
-			spawner.spawn_enemy(group.enemy_data, path, wave.enemy_health_multiplier, wave.enemy_speed_multiplier)
+			spawner.spawn_enemy(group.enemy_data, path, wave.enemy_health_multiplier * curve_mult, wave.enemy_speed_multiplier)
 			if i < group.count - 1:
 				await get_tree().create_timer(group.interval).timeout
 				if GameState.current_state == GameState.State.DEFEAT or GameState.current_state == GameState.State.VICTORY:

@@ -11,6 +11,7 @@ var current_health: float
 var _path: PathData
 var _current_waypoint_index: int = 0
 var _is_dying: bool = false
+var _applied_health_mult: float = 1.0
 
 
 func _ready() -> void:
@@ -25,6 +26,7 @@ func _ready() -> void:
 
 
 func apply_wave_modifiers(health_mult: float, speed_mult: float) -> void:
+	_applied_health_mult = health_mult
 	max_health = max_health * health_mult
 	current_health = max_health
 	move_speed = move_speed * speed_mult
@@ -40,7 +42,7 @@ func take_damage(amount: float) -> void:
 	if current_health <= 0.0:
 		_is_dying = true
 		if enemy_data != null:
-			GameState.add_credits(enemy_data.bounty)
+			GameState.add_credits(int(round(enemy_data.bounty * sqrt(_applied_health_mult))))
 		GameState.on_enemy_killed()
 		queue_free()
 

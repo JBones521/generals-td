@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/enemy_data.gd" id="1_ed"]
+[ext_resource type="PackedScene" path="res://scenes/units/enemies/overlord.tscn" id="2_scene"]
+
+[resource]
+script = ExtResource("1_ed")
+enemy_id = "china_overlord"
+display_name = "Overlord Tank"
+enemy_type = "vehicle"
+max_health = 120.0
+move_speed = 2.0
+damage_to_base = 5
+bounty = 250
+enemy_scene = ExtResource("2_scene")

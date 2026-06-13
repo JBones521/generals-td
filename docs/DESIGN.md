@@ -437,6 +437,7 @@ Credit scale: Generals-authentic pricing adopted in Step 9 (towers 500-1200, Sup
 - Next-wave preview shown in HUD
 - Total session: 20-40 min, 20-30 waves
 - Boss waves every 5 waves: Black Lotus, Jarmen Kell, Colonel Burton
+- Difficulty: compounding curve, enemy HP x 1.12 per wave on top of table multipliers; bounties scale with sqrt of applied health multiplier. Boss waves 5/10/15 anchored by Overlord Tanks.
 
 ### Damage Type Triangle
 

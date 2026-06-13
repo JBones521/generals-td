@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LevelWaves" load_steps=52 format=3]
+[gd_resource type="Resource" script_class="LevelWaves" load_steps=59 format=3]
 
 [ext_resource type="Script" path="res://scripts/level_waves.gd" id="1_lw"]
 [ext_resource type="Script" path="res://scripts/wave_data.gd" id="2_wd"]
@@ -6,8 +6,10 @@
 [ext_resource type="Script" path="res://scripts/path_data.gd" id="4_pd"]
 [ext_resource type="Resource" path="res://scenes/units/enemies/red_guard.tres" id="5_rg"]
 [ext_resource type="Resource" path="res://scenes/units/enemies/battlemaster.tres" id="6_bm"]
-[ext_resource type="Resource" path="res://scenes/levels/path_a.tres" id="7_pa"]
-[ext_resource type="Resource" path="res://scenes/levels/path_b.tres" id="8_pb"]
+[ext_resource type="Resource" path="res://scenes/units/enemies/tank_hunter.tres" id="7_th"]
+[ext_resource type="Resource" path="res://scenes/units/enemies/overlord.tres" id="8_ol"]
+[ext_resource type="Resource" path="res://scenes/levels/path_a.tres" id="9_pa"]
+[ext_resource type="Resource" path="res://scenes/levels/path_b.tres" id="10_pb"]
 
 [sub_resource type="Resource" id="WG_w1g1"]
 script = ExtResource("3_wg")
@@ -20,68 +22,89 @@ delay_after = 0.0
 script = ExtResource("3_wg")
 enemy_data = ExtResource("5_rg")
 count = 10
-interval = 1.5
+interval = 1.2
+delay_after = 2.0
+
+[sub_resource type="Resource" id="WG_w2g2"]
+script = ExtResource("3_wg")
+enemy_data = ExtResource("6_bm")
+count = 2
+interval = 2.0
 delay_after = 0.0
 
 [sub_resource type="Resource" id="WG_w3g1"]
 script = ExtResource("3_wg")
 enemy_data = ExtResource("6_bm")
 count = 8
-interval = 1.5
+interval = 1.2
+delay_after = 2.0
+
+[sub_resource type="Resource" id="WG_w3g2"]
+script = ExtResource("3_wg")
+enemy_data = ExtResource("5_rg")
+count = 6
+interval = 0.9
 delay_after = 0.0
 
 [sub_resource type="Resource" id="WG_w4g1"]
 script = ExtResource("3_wg")
 enemy_data = ExtResource("5_rg")
-count = 6
-interval = 1.0
-delay_after = 0.0
+count = 10
+interval = 0.8
+delay_after = 2.0
 
 [sub_resource type="Resource" id="WG_w4g2"]
 script = ExtResource("3_wg")
-enemy_data = ExtResource("6_bm")
-count = 6
-interval = 1.0
+enemy_data = ExtResource("7_th")
+count = 4
+interval = 1.5
 delay_after = 0.0
 
 [sub_resource type="Resource" id="WG_w5g1"]
 script = ExtResource("3_wg")
-enemy_data = ExtResource("5_rg")
-count = 12
+enemy_data = ExtResource("8_ol")
+count = 1
 interval = 1.0
 delay_after = 2.0
 
 [sub_resource type="Resource" id="WG_w5g2"]
 script = ExtResource("3_wg")
+enemy_data = ExtResource("5_rg")
+count = 8
+interval = 0.7
+delay_after = 2.0
+
+[sub_resource type="Resource" id="WG_w5g3"]
+script = ExtResource("3_wg")
 enemy_data = ExtResource("6_bm")
-count = 6
+count = 4
 interval = 1.0
 delay_after = 0.0
 
 [sub_resource type="Resource" id="WG_w6g1"]
 script = ExtResource("3_wg")
 enemy_data = ExtResource("5_rg")
-count = 12
-interval = 0.7
-delay_after = 0.0
+count = 14
+interval = 0.6
+delay_after = 2.0
 
 [sub_resource type="Resource" id="WG_w6g2"]
 script = ExtResource("3_wg")
-enemy_data = ExtResource("6_bm")
-count = 2
+enemy_data = ExtResource("7_th")
+count = 6
 interval = 1.0
 delay_after = 0.0
 
 [sub_resource type="Resource" id="WG_w7g1"]
 script = ExtResource("3_wg")
 enemy_data = ExtResource("6_bm")
-count = 8
-interval = 1.0
-delay_after = 0.0
+count = 10
+interval = 0.8
+delay_after = 2.0
 
 [sub_resource type="Resource" id="WG_w7g2"]
 script = ExtResource("3_wg")
-enemy_data = ExtResource("5_rg")
+enemy_data = ExtResource("7_th")
 count = 8
 interval = 0.8
 delay_after = 0.0
@@ -89,120 +112,134 @@ delay_after = 0.0
 [sub_resource type="Resource" id="WG_w8g1"]
 script = ExtResource("3_wg")
 enemy_data = ExtResource("5_rg")
-count = 16
-interval = 0.6
-delay_after = 0.0
+count = 20
+interval = 0.45
+delay_after = 2.0
 
 [sub_resource type="Resource" id="WG_w8g2"]
 script = ExtResource("3_wg")
 enemy_data = ExtResource("6_bm")
-count = 3
-interval = 1.0
+count = 5
+interval = 0.9
 delay_after = 0.0
 
 [sub_resource type="Resource" id="WG_w9g1"]
 script = ExtResource("3_wg")
 enemy_data = ExtResource("6_bm")
-count = 10
-interval = 0.8
-delay_after = 0.0
+count = 12
+interval = 0.7
+delay_after = 2.0
 
 [sub_resource type="Resource" id="WG_w9g2"]
 script = ExtResource("3_wg")
-enemy_data = ExtResource("5_rg")
-count = 5
-interval = 0.5
+enemy_data = ExtResource("7_th")
+count = 8
+interval = 0.7
 delay_after = 0.0
 
 [sub_resource type="Resource" id="WG_w10g1"]
 script = ExtResource("3_wg")
-enemy_data = ExtResource("6_bm")
-count = 10
-interval = 0.8
-delay_after = 1.0
+enemy_data = ExtResource("8_ol")
+count = 2
+interval = 1.5
+delay_after = 2.0
 
 [sub_resource type="Resource" id="WG_w10g2"]
 script = ExtResource("3_wg")
+enemy_data = ExtResource("6_bm")
+count = 10
+interval = 0.8
+delay_after = 2.0
+
+[sub_resource type="Resource" id="WG_w10g3"]
+script = ExtResource("3_wg")
 enemy_data = ExtResource("5_rg")
-count = 15
-interval = 0.6
+count = 10
+interval = 0.5
 delay_after = 0.0
 
 [sub_resource type="Resource" id="WG_w11g1"]
 script = ExtResource("3_wg")
 enemy_data = ExtResource("5_rg")
 count = 18
-interval = 0.5
-delay_after = 0.0
+interval = 0.4
+delay_after = 2.0
 
 [sub_resource type="Resource" id="WG_w11g2"]
 script = ExtResource("3_wg")
-enemy_data = ExtResource("6_bm")
-count = 6
-interval = 0.8
-delay_after = 0.0
+enemy_data = ExtResource("7_th")
+count = 10
+interval = 0.6
+delay_after = 2.0
 
-[sub_resource type="Resource" id="WG_w12g1"]
-script = ExtResource("3_wg")
-enemy_data = ExtResource("5_rg")
-count = 20
-interval = 0.5
-delay_after = 0.0
-
-[sub_resource type="Resource" id="WG_w12g2"]
+[sub_resource type="Resource" id="WG_w11g3"]
 script = ExtResource("3_wg")
 enemy_data = ExtResource("6_bm")
 count = 4
 interval = 0.9
 delay_after = 0.0
 
-[sub_resource type="Resource" id="WG_w13g1"]
+[sub_resource type="Resource" id="WG_w12g1"]
+script = ExtResource("3_wg")
+enemy_data = ExtResource("5_rg")
+count = 24
+interval = 0.4
+delay_after = 2.0
+
+[sub_resource type="Resource" id="WG_w12g2"]
 script = ExtResource("3_wg")
 enemy_data = ExtResource("6_bm")
-count = 12
+count = 8
 interval = 0.7
 delay_after = 0.0
 
+[sub_resource type="Resource" id="WG_w13g1"]
+script = ExtResource("3_wg")
+enemy_data = ExtResource("6_bm")
+count = 14
+interval = 0.6
+delay_after = 2.0
+
 [sub_resource type="Resource" id="WG_w13g2"]
 script = ExtResource("3_wg")
-enemy_data = ExtResource("5_rg")
-count = 6
-interval = 0.5
+enemy_data = ExtResource("7_th")
+count = 10
+interval = 0.6
 delay_after = 0.0
 
 [sub_resource type="Resource" id="WG_w14g1"]
 script = ExtResource("3_wg")
-enemy_data = ExtResource("5_rg")
-count = 15
-interval = 0.5
-delay_after = 0.0
+enemy_data = ExtResource("6_bm")
+count = 16
+interval = 0.55
+delay_after = 2.0
 
 [sub_resource type="Resource" id="WG_w14g2"]
 script = ExtResource("3_wg")
-enemy_data = ExtResource("6_bm")
-count = 15
-interval = 0.6
+enemy_data = ExtResource("5_rg")
+count = 16
+interval = 0.4
 delay_after = 0.0
 
 [sub_resource type="Resource" id="WG_w15g1"]
 script = ExtResource("3_wg")
-enemy_data = ExtResource("5_rg")
-count = 20
-interval = 0.4
-delay_after = 0.0
+enemy_data = ExtResource("8_ol")
+count = 3
+interval = 2.0
+delay_after = 2.0
 
 [sub_resource type="Resource" id="WG_w15g2"]
 script = ExtResource("3_wg")
 enemy_data = ExtResource("6_bm")
-count = 10
+count = 12
 interval = 0.6
-delay_after = 0.0
+delay_after = 2.0
 
 [sub_resource type="Resource" id="WG_w15g3"]
 script = ExtResource("3_wg")
 enemy_data = ExtResource("5_rg")
-count = 10
-interval = 0.3
+count = 20
+interval = 0.35
 delay_after = 0.0
 
 [sub_resource type="Resource" id="Wave_1"]
@@ -210,105 +247,105 @@ script = ExtResource("2_wd")
 groups = Array[ExtResource("3_wg")]([SubResource("WG_w1g1")])
 enemy_health_multiplier = 1.0
 enemy_speed_multiplier = 1.0
-paths_to_use = Array[ExtResource("4_pd")]([ExtResource("7_pa"), ExtResource("8_pb")])
+paths_to_use = Array[ExtResource("4_pd")]([ExtResource("9_pa"), ExtResource("10_pb")])
 
 [sub_resource type="Resource" id="Wave_2"]
 script = ExtResource("2_wd")
-groups = Array[ExtResource("3_wg")]([SubResource("WG_w2g1")])
+groups = Array[ExtResource("3_wg")]([SubResource("WG_w2g1"), SubResource("WG_w2g2")])
 enemy_health_multiplier = 1.0
 enemy_speed_multiplier = 1.0
-paths_to_use = Array[ExtResource("4_pd")]([ExtResource("7_pa"), ExtResource("8_pb")])
+paths_to_use = Array[ExtResource("4_pd")]([ExtResource("9_pa"), ExtResource("10_pb")])
 
 [sub_resource type="Resource" id="Wave_3"]
 script = ExtResource("2_wd")
-groups = Array[ExtResource("3_wg")]([SubResource("WG_w3g1")])
+groups = Array[ExtResource("3_wg")]([SubResource("WG_w3g1"), SubResource("WG_w3g2")])
 enemy_health_multiplier = 1.0
 enemy_speed_multiplier = 1.0
-paths_to_use = Array[ExtResource("4_pd")]([ExtResource("7_pa"), ExtResource("8_pb")])
+paths_to_use = Array[ExtResource("4_pd")]([ExtResource("9_pa"), ExtResource("10_pb")])
 
 [sub_resource type="Resource" id="Wave_4"]
 script = ExtResource("2_wd")
 groups = Array[ExtResource("3_wg")]([SubResource("WG_w4g1"), SubResource("WG_w4g2")])
 enemy_health_multiplier = 1.0
 enemy_speed_multiplier = 1.0
-paths_to_use = Array[ExtResource("4_pd")]([ExtResource("7_pa"), ExtResource("8_pb")])
+paths_to_use = Array[ExtResource("4_pd")]([ExtResource("9_pa"), ExtResource("10_pb")])
 
 [sub_resource type="Resource" id="Wave_5"]
 script = ExtResource("2_wd")
-groups = Array[ExtResource("3_wg")]([SubResource("WG_w5g1"), SubResource("WG_w5g2")])
+groups = Array[ExtResource("3_wg")]([SubResource("WG_w5g1"), SubResource("WG_w5g2"), SubResource("WG_w5g3")])
 enemy_health_multiplier = 1.0
 enemy_speed_multiplier = 1.0
-paths_to_use = Array[ExtResource("4_pd")]([ExtResource("7_pa"), ExtResource("8_pb")])
+paths_to_use = Array[ExtResource("4_pd")]([ExtResource("9_pa"), ExtResource("10_pb")])
 
 [sub_resource type="Resource" id="Wave_6"]
 script = ExtResource("2_wd")
 groups = Array[ExtResource("3_wg")]([SubResource("WG_w6g1"), SubResource("WG_w6g2")])
 enemy_health_multiplier = 1.0
 enemy_speed_multiplier = 1.0
-paths_to_use = Array[ExtResource("4_pd")]([ExtResource("7_pa"), ExtResource("8_pb")])
+paths_to_use = Array[ExtResource("4_pd")]([ExtResource("9_pa"), ExtResource("10_pb")])
 
 [sub_resource type="Resource" id="Wave_7"]
 script = ExtResource("2_wd")
 groups = Array[ExtResource("3_wg")]([SubResource("WG_w7g1"), SubResource("WG_w7g2")])
 enemy_health_multiplier = 1.0
 enemy_speed_multiplier = 1.0
-paths_to_use = Array[ExtResource("4_pd")]([ExtResource("7_pa"), ExtResource("8_pb")])
+paths_to_use = Array[ExtResource("4_pd")]([ExtResource("9_pa"), ExtResource("10_pb")])
 
 [sub_resource type="Resource" id="Wave_8"]
 script = ExtResource("2_wd")
 groups = Array[ExtResource("3_wg")]([SubResource("WG_w8g1"), SubResource("WG_w8g2")])
 enemy_health_multiplier = 1.0
-enemy_speed_multiplier = 1.3
-paths_to_use = Array[ExtResource("4_pd")]([ExtResource("7_pa"), ExtResource("8_pb")])
+enemy_speed_multiplier = 1.25
+paths_to_use = Array[ExtResource("4_pd")]([ExtResource("9_pa"), ExtResource("10_pb")])
 
 [sub_resource type="Resource" id="Wave_9"]
 script = ExtResource("2_wd")
 groups = Array[ExtResource("3_wg")]([SubResource("WG_w9g1"), SubResource("WG_w9g2")])
-enemy_health_multiplier = 1.5
+enemy_health_multiplier = 1.0
 enemy_speed_multiplier = 1.0
-paths_to_use = Array[ExtResource("4_pd")]([ExtResource("7_pa"), ExtResource("8_pb")])
+paths_to_use = Array[ExtResource("4_pd")]([ExtResource("9_pa"), ExtResource("10_pb")])
 
 [sub_resource type="Resource" id="Wave_10"]
 script = ExtResource("2_wd")
-groups = Array[ExtResource("3_wg")]([SubResource("WG_w10g1"), SubResource("WG_w10g2")])
+groups = Array[ExtResource("3_wg")]([SubResource("WG_w10g1"), SubResource("WG_w10g2"), SubResource("WG_w10g3")])
 enemy_health_multiplier = 1.0
 enemy_speed_multiplier = 1.0
-paths_to_use = Array[ExtResource("4_pd")]([ExtResource("7_pa"), ExtResource("8_pb")])
+paths_to_use = Array[ExtResource("4_pd")]([ExtResource("9_pa"), ExtResource("10_pb")])
 
 [sub_resource type="Resource" id="Wave_11"]
 script = ExtResource("2_wd")
-groups = Array[ExtResource("3_wg")]([SubResource("WG_w11g1"), SubResource("WG_w11g2")])
+groups = Array[ExtResource("3_wg")]([SubResource("WG_w11g1"), SubResource("WG_w11g2"), SubResource("WG_w11g3")])
 enemy_health_multiplier = 1.0
-enemy_speed_multiplier = 1.5
-paths_to_use = Array[ExtResource("4_pd")]([ExtResource("7_pa"), ExtResource("8_pb")])
+enemy_speed_multiplier = 1.3
+paths_to_use = Array[ExtResource("4_pd")]([ExtResource("9_pa"), ExtResource("10_pb")])
 
 [sub_resource type="Resource" id="Wave_12"]
 script = ExtResource("2_wd")
 groups = Array[ExtResource("3_wg")]([SubResource("WG_w12g1"), SubResource("WG_w12g2")])
-enemy_health_multiplier = 1.2
-enemy_speed_multiplier = 1.5
-paths_to_use = Array[ExtResource("4_pd")]([ExtResource("7_pa"), ExtResource("8_pb")])
+enemy_health_multiplier = 1.0
+enemy_speed_multiplier = 1.0
+paths_to_use = Array[ExtResource("4_pd")]([ExtResource("9_pa"), ExtResource("10_pb")])
 
 [sub_resource type="Resource" id="Wave_13"]
 script = ExtResource("2_wd")
 groups = Array[ExtResource("3_wg")]([SubResource("WG_w13g1"), SubResource("WG_w13g2")])
-enemy_health_multiplier = 1.8
+enemy_health_multiplier = 1.0
 enemy_speed_multiplier = 1.0
-paths_to_use = Array[ExtResource("4_pd")]([ExtResource("7_pa"), ExtResource("8_pb")])
+paths_to_use = Array[ExtResource("4_pd")]([ExtResource("9_pa"), ExtResource("10_pb")])
 
 [sub_resource type="Resource" id="Wave_14"]
 script = ExtResource("2_wd")
 groups = Array[ExtResource("3_wg")]([SubResource("WG_w14g1"), SubResource("WG_w14g2")])
-enemy_health_multiplier = 1.3
-enemy_speed_multiplier = 1.4
-paths_to_use = Array[ExtResource("4_pd")]([ExtResource("7_pa"), ExtResource("8_pb")])
+enemy_health_multiplier = 1.0
+enemy_speed_multiplier = 1.0
+paths_to_use = Array[ExtResource("4_pd")]([ExtResource("9_pa"), ExtResource("10_pb")])
 
 [sub_resource type="Resource" id="Wave_15"]
 script = ExtResource("2_wd")
 groups = Array[ExtResource("3_wg")]([SubResource("WG_w15g1"), SubResource("WG_w15g2"), SubResource("WG_w15g3")])
-enemy_health_multiplier = 1.5
-enemy_speed_multiplier = 1.5
-paths_to_use = Array[ExtResource("4_pd")]([ExtResource("7_pa"), ExtResource("8_pb")])
+enemy_health_multiplier = 1.0
+enemy_speed_multiplier = 1.0
+paths_to_use = Array[ExtResource("4_pd")]([ExtResource("9_pa"), ExtResource("10_pb")])
 
 [resource]
 script = ExtResource("1_lw")
