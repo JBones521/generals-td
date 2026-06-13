@@ -44,7 +44,6 @@ albedo_color = Color(0.9, 0.2, 0.2, 1)
 size = Vector3(40, 0.1, 40)
 
 [node name="Level01" type="Node3D" unique_id=1512329578]
-transform = Transform3D(0.9981531, 0.014394628, 0.05901907, -0.0052347817, 0.9882883, -0.1525088, -0.060523167, 0.15191823, 0.98653847, 0.38716984, 1.9073486e-06, 0.16686821)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1808850873]
 environment = SubResource("Environment_main")

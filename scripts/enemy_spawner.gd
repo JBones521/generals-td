@@ -28,4 +28,5 @@ func spawn_enemy(enemy_data: EnemyData, path: PathData, health_mult: float = 1.0
 	get_parent().add_child(enemy)
 	enemy.apply_wave_modifiers(health_mult, speed_mult)
 	enemy.assign_path(path)
-	print("[Spawner] spawned ", enemy.name, " (", enemy_data.enemy_id, ") on path '", path.path_name, "' at ", enemy.global_position, " HP=", enemy.current_health, "/", enemy.max_health, " speed=", enemy.move_speed, " (h_mult=", health_mult, " s_mult=", speed_mult, ")")
+	if GameState.DEBUG_LOGGING:
+		print("[Spawner] spawned ", enemy.name, " (", enemy_data.enemy_id, ") on path '", path.path_name, "' at ", enemy.global_position, " HP=", enemy.current_health, "/", enemy.max_health, " speed=", enemy.move_speed, " (h_mult=", health_mult, " s_mult=", speed_mult, ")")

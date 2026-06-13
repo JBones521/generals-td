@@ -111,10 +111,10 @@ func _refresh_status_label() -> void:
 		GameState.State.WAVE_COMPLETE:
 			status_label.visible = false
 		GameState.State.VICTORY:
-			status_label.text = "VICTORY! All waves cleared."
+			status_label.text = "VICTORY! All waves cleared. Press R to restart."
 			status_label.visible = true
 		GameState.State.DEFEAT:
-			status_label.text = "DEFEAT. Your base has fallen."
+			status_label.text = "DEFEAT. Your base has fallen. Press R to restart."
 			status_label.visible = true
 
 

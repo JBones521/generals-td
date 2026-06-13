@@ -3,6 +3,7 @@ extends Node3D
 
 enum TargetingStrategy {
 	FIRST_IN_RANGE,
+	MOST_PROGRESSED,
 }
 
 @export var tower_data: TowerData
@@ -11,7 +12,7 @@ enum TargetingStrategy {
 @export var fire_rate: float = 1.0
 @export var damage: float = 10.0
 @export var show_range_indicator: bool = true
-@export var targeting_strategy: TargetingStrategy = TargetingStrategy.FIRST_IN_RANGE
+@export var targeting_strategy: TargetingStrategy = TargetingStrategy.MOST_PROGRESSED
 
 var enemies_in_range: Array[Node3D] = []
 
@@ -31,9 +32,10 @@ func _ready() -> void:
 		push_error("[Tower] RangeIndicator/TorusMesh missing — visual range not synced")
 	if sphere == null:
 		push_error("[Tower] DetectionArea/SphereShape3D missing — detection radius not synced")
-	var torus_outer: float = torus.outer_radius if torus != null else -1.0
-	var sphere_radius: float = sphere.radius if sphere != null else -1.0
-	print("[Tower] ", tower_name, " attack_range=", attack_range, " torus_outer=", torus_outer, " sphere_radius=", sphere_radius)
+	if GameState.DEBUG_LOGGING:
+		var torus_outer: float = torus.outer_radius if torus != null else -1.0
+		var sphere_radius: float = sphere.radius if sphere != null else -1.0
+		print("[Tower] ", tower_name, " attack_range=", attack_range, " torus_outer=", torus_outer, " sphere_radius=", sphere_radius)
 
 
 func _apply_range_to_indicator() -> TorusMesh:
@@ -90,10 +92,25 @@ func _prune_invalid_enemies() -> void:
 
 
 func _select_target() -> Node3D:
-	for e in enemies_in_range:
-		if is_instance_valid(e) and not e.is_queued_for_deletion():
-			return e
-	return null
+	match targeting_strategy:
+		TargetingStrategy.MOST_PROGRESSED:
+			var best: Node3D = null
+			var best_progress: float = -INF
+			for e in enemies_in_range:
+				if not is_instance_valid(e) or e.is_queued_for_deletion():
+					continue
+				if not e.has_method("get_path_progress"):
+					continue
+				var progress: float = e.get_path_progress()
+				if progress > best_progress:
+					best_progress = progress
+					best = e
+			return best
+		_:
+			for e in enemies_in_range:
+				if is_instance_valid(e) and not e.is_queued_for_deletion():
+					return e
+			return null
 
 
 func _fire_at(target: Node3D) -> void:
@@ -108,7 +125,8 @@ func _fire_at(target: Node3D) -> void:
 			"vehicle":
 				dmg = damage * tower_data.damage_vs_vehicle_mult
 	var target_pos: Vector3 = target.global_position
-	print("[Tower] ", name, " (", tower_name, ") firing at ", target.name, " at ", target_pos, " damage=", dmg)
+	if GameState.DEBUG_LOGGING:
+		print("[Tower] ", name, " (", tower_name, ") firing at ", target.name, " at ", target_pos, " damage=", dmg)
 	if target.has_method("take_damage"):
 		target.take_damage(dmg)
 	_show_tracer(target_pos)

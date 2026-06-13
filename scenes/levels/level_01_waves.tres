@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="LevelWaves" load_steps=47 format=3]
+[gd_resource type="Resource" script_class="LevelWaves" load_steps=52 format=3]
 
 [ext_resource type="Script" path="res://scripts/level_waves.gd" id="1_lw"]
 [ext_resource type="Script" path="res://scripts/wave_data.gd" id="2_wd"]
@@ -61,8 +61,15 @@ delay_after = 0.0
 [sub_resource type="Resource" id="WG_w6g1"]
 script = ExtResource("3_wg")
 enemy_data = ExtResource("5_rg")
-count = 15
+count = 12
 interval = 0.7
+delay_after = 0.0
+
+[sub_resource type="Resource" id="WG_w6g2"]
+script = ExtResource("3_wg")
+enemy_data = ExtResource("6_bm")
+count = 2
+interval = 1.0
 delay_after = 0.0
 
 [sub_resource type="Resource" id="WG_w7g1"]
@@ -82,15 +89,29 @@ delay_after = 0.0
 [sub_resource type="Resource" id="WG_w8g1"]
 script = ExtResource("3_wg")
 enemy_data = ExtResource("5_rg")
-count = 20
+count = 16
 interval = 0.6
+delay_after = 0.0
+
+[sub_resource type="Resource" id="WG_w8g2"]
+script = ExtResource("3_wg")
+enemy_data = ExtResource("6_bm")
+count = 3
+interval = 1.0
 delay_after = 0.0
 
 [sub_resource type="Resource" id="WG_w9g1"]
 script = ExtResource("3_wg")
 enemy_data = ExtResource("6_bm")
-count = 12
+count = 10
 interval = 0.8
+delay_after = 0.0
+
+[sub_resource type="Resource" id="WG_w9g2"]
+script = ExtResource("3_wg")
+enemy_data = ExtResource("5_rg")
+count = 5
+interval = 0.5
 delay_after = 0.0
 
 [sub_resource type="Resource" id="WG_w10g1"]
@@ -124,15 +145,29 @@ delay_after = 0.0
 [sub_resource type="Resource" id="WG_w12g1"]
 script = ExtResource("3_wg")
 enemy_data = ExtResource("5_rg")
-count = 25
+count = 20
 interval = 0.5
+delay_after = 0.0
+
+[sub_resource type="Resource" id="WG_w12g2"]
+script = ExtResource("3_wg")
+enemy_data = ExtResource("6_bm")
+count = 4
+interval = 0.9
 delay_after = 0.0
 
 [sub_resource type="Resource" id="WG_w13g1"]
 script = ExtResource("3_wg")
 enemy_data = ExtResource("6_bm")
-count = 15
+count = 12
 interval = 0.7
+delay_after = 0.0
+
+[sub_resource type="Resource" id="WG_w13g2"]
+script = ExtResource("3_wg")
+enemy_data = ExtResource("5_rg")
+count = 6
+interval = 0.5
 delay_after = 0.0
 
 [sub_resource type="Resource" id="WG_w14g1"]
@@ -207,7 +242,7 @@ paths_to_use = Array[ExtResource("4_pd")]([ExtResource("7_pa"), ExtResource("8_p
 
 [sub_resource type="Resource" id="Wave_6"]
 script = ExtResource("2_wd")
-groups = Array[ExtResource("3_wg")]([SubResource("WG_w6g1")])
+groups = Array[ExtResource("3_wg")]([SubResource("WG_w6g1"), SubResource("WG_w6g2")])
 enemy_health_multiplier = 1.0
 enemy_speed_multiplier = 1.0
 paths_to_use = Array[ExtResource("4_pd")]([ExtResource("7_pa"), ExtResource("8_pb")])
@@ -221,14 +256,14 @@ paths_to_use = Array[ExtResource("4_pd")]([ExtResource("7_pa"), ExtResource("8_p
 
 [sub_resource type="Resource" id="Wave_8"]
 script = ExtResource("2_wd")
-groups = Array[ExtResource("3_wg")]([SubResource("WG_w8g1")])
+groups = Array[ExtResource("3_wg")]([SubResource("WG_w8g1"), SubResource("WG_w8g2")])
 enemy_health_multiplier = 1.0
 enemy_speed_multiplier = 1.3
 paths_to_use = Array[ExtResource("4_pd")]([ExtResource("7_pa"), ExtResource("8_pb")])
 
 [sub_resource type="Resource" id="Wave_9"]
 script = ExtResource("2_wd")
-groups = Array[ExtResource("3_wg")]([SubResource("WG_w9g1")])
+groups = Array[ExtResource("3_wg")]([SubResource("WG_w9g1"), SubResource("WG_w9g2")])
 enemy_health_multiplier = 1.5
 enemy_speed_multiplier = 1.0
 paths_to_use = Array[ExtResource("4_pd")]([ExtResource("7_pa"), ExtResource("8_pb")])
@@ -249,14 +284,14 @@ paths_to_use = Array[ExtResource("4_pd")]([ExtResource("7_pa"), ExtResource("8_p
 
 [sub_resource type="Resource" id="Wave_12"]
 script = ExtResource("2_wd")
-groups = Array[ExtResource("3_wg")]([SubResource("WG_w12g1")])
+groups = Array[ExtResource("3_wg")]([SubResource("WG_w12g1"), SubResource("WG_w12g2")])
 enemy_health_multiplier = 1.2
 enemy_speed_multiplier = 1.5
 paths_to_use = Array[ExtResource("4_pd")]([ExtResource("7_pa"), ExtResource("8_pb")])
 
 [sub_resource type="Resource" id="Wave_13"]
 script = ExtResource("2_wd")
-groups = Array[ExtResource("3_wg")]([SubResource("WG_w13g1")])
+groups = Array[ExtResource("3_wg")]([SubResource("WG_w13g1"), SubResource("WG_w13g2")])
 enemy_health_multiplier = 1.8
 enemy_speed_multiplier = 1.0
 paths_to_use = Array[ExtResource("4_pd")]([ExtResource("7_pa"), ExtResource("8_pb")])

@@ -71,7 +71,8 @@ func _select_tower(td: TowerData) -> void:
 	selected_tower_data = td
 	_create_preview(td)
 	tower_selected_changed.emit(td)
-	print("[BuildManager] selected %s (cost=%d)" % [td.tower_id, td.cost])
+	if GameState.DEBUG_LOGGING:
+		print("[BuildManager] selected %s (cost=%d)" % [td.tower_id, td.cost])
 
 
 func _cancel_placement() -> void:
@@ -169,12 +170,14 @@ func _try_place_tower() -> void:
 		return
 	var pos: Vector3 = preview_instance.global_position
 	if not _is_valid_placement(pos):
-		print("[BuildManager] placement at %s rejected" % pos)
+		if GameState.DEBUG_LOGGING:
+			print("[BuildManager] placement at %s rejected" % pos)
 		return
 	var td := selected_tower_data
 	var cost: int = td.cost
 	if not GameState.spend_credits(cost):
-		print("[BuildManager] could not spend %d credits" % cost)
+		if GameState.DEBUG_LOGGING:
+			print("[BuildManager] could not spend %d credits" % cost)
 		return
 	_cancel_placement()
 	var tower := td.tower_scene.instantiate() as Tower
@@ -185,4 +188,5 @@ func _try_place_tower() -> void:
 	add_child(tower)
 	tower.global_position = pos
 	placed_towers.append(tower)
-	print("[BuildManager] placed %s at %s (cost=%d, credits remaining=%d)" % [td.tower_id, pos, cost, GameState.credits])
+	if GameState.DEBUG_LOGGING:
+		print("[BuildManager] placed %s at %s (cost=%d, credits remaining=%d)" % [td.tower_id, pos, cost, GameState.credits])

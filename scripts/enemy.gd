@@ -34,7 +34,8 @@ func take_damage(amount: float) -> void:
 	if _is_dying:
 		return
 	current_health -= amount
-	print("[Enemy] ", name, " took ", amount, " damage. HP now ", current_health, "/", max_health, " at ", global_position)
+	if GameState.DEBUG_LOGGING:
+		print("[Enemy] ", name, " took ", amount, " damage. HP now ", current_health, "/", max_health, " at ", global_position)
 	_update_health_bar()
 	if current_health <= 0.0:
 		_is_dying = true
@@ -57,6 +58,16 @@ func _update_health_bar() -> void:
 	bar.visible = ratio < 1.0
 
 
+func get_path_progress() -> float:
+	if _path == null or _path.waypoints.is_empty():
+		return 0.0
+	if _current_waypoint_index >= _path.waypoints.size():
+		return float(_current_waypoint_index) * 1000.0
+	var next: Vector3 = _path.waypoints[_current_waypoint_index]
+	next.y = 1.0
+	return float(_current_waypoint_index) * 1000.0 - global_position.distance_to(next)
+
+
 func assign_path(path: PathData) -> void:
 	_path = path
 	_current_waypoint_index = 0
@@ -74,14 +85,6 @@ func _physics_process(delta: float) -> void:
 		return
 	if _current_waypoint_index >= _path.waypoints.size():
 		return
-
-	if Engine.get_physics_frames() % 60 == 0:
-		var target_str: String
-		if _current_waypoint_index < _path.waypoints.size():
-			target_str = str(_path.waypoints[_current_waypoint_index])
-		else:
-			target_str = "OOB"
-		print("[Enemy] ", name, " pos=", global_position, " target_idx=", _current_waypoint_index, " target=", target_str, " path='", _path.path_name, "'")
 
 	var target := _path.waypoints[_current_waypoint_index]
 	target.y = 1.0

@@ -8,6 +8,8 @@ enum State {
 	DEFEAT,
 }
 
+const DEBUG_LOGGING: bool = false
+
 const STARTING_CREDITS: int = 100
 const STARTING_BASE_HEALTH: int = 40
 
