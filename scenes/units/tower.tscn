@@ -1,20 +1,39 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=15 format=3]
 
 [ext_resource type="Script" path="res://scripts/tower.gd" id="1_tower"]
+[ext_resource type="Script" path="res://scripts/visual_spin.gd" id="2_spin"]
 
-[sub_resource type="CylinderMesh" id="CylinderMesh_base"]
-top_radius = 1.0
-bottom_radius = 1.0
-height = 2.0
+[sub_resource type="BoxMesh" id="BoxMesh_platform"]
+size = Vector3(1.8, 0.3, 1.8)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dark_gray"]
-albedo_color = Color(0.3, 0.3, 0.3, 1)
+[sub_resource type="CylinderMesh" id="CylinderMesh_pedestal"]
+top_radius = 0.35
+bottom_radius = 0.35
+height = 0.6
 
-[sub_resource type="BoxMesh" id="BoxMesh_gun"]
-size = Vector3(0.5, 0.5, 1.5)
+[sub_resource type="BoxMesh" id="BoxMesh_launcher"]
+size = Vector3(1.2, 0.7, 1.6)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_light_gray"]
-albedo_color = Color(0.7, 0.7, 0.7, 1)
+[sub_resource type="BoxMesh" id="BoxMesh_launcher_face"]
+size = Vector3(1, 0.55, 0.1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_mast"]
+size = Vector3(0.1, 0.8, 0.1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_radar_panel"]
+size = Vector3(0.7, 0.45, 0.06)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dark_metal"]
+albedo_color = Color(0.25, 0.27, 0.3, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hull_gray"]
+albedo_color = Color(0.75, 0.78, 0.8, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_white"]
+albedo_color = Color(0.92, 0.94, 0.95, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_accent_blue"]
+albedo_color = Color(0.15, 0.3, 0.55, 1)
 
 [sub_resource type="TorusMesh" id="TorusMesh_range"]
 resource_local_to_scene = true
@@ -32,15 +51,43 @@ radius = 10.0
 [node name="Tower" type="Node3D"]
 script = ExtResource("1_tower")
 
-[node name="Base" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-mesh = SubResource("CylinderMesh_base")
-surface_material_override/0 = SubResource("StandardMaterial3D_dark_gray")
+[node name="Platform" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
+mesh = SubResource("BoxMesh_platform")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_metal")
 
-[node name="Gun" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
-mesh = SubResource("BoxMesh_gun")
-surface_material_override/0 = SubResource("StandardMaterial3D_light_gray")
+[node name="Pedestal" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
+mesh = SubResource("CylinderMesh_pedestal")
+surface_material_override/0 = SubResource("StandardMaterial3D_hull_gray")
+
+[node name="Turret" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Launcher" type="MeshInstance3D" parent="Turret"]
+transform = Transform3D(1, 0, 0, 0, 0.866025, 0.5, 0, -0.5, 0.866025, 0, 0.3, 0)
+mesh = SubResource("BoxMesh_launcher")
+surface_material_override/0 = SubResource("StandardMaterial3D_white")
+
+[node name="LauncherFace" type="MeshInstance3D" parent="Turret/Launcher"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.78)
+mesh = SubResource("BoxMesh_launcher_face")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_metal")
+
+[node name="Muzzle" type="Marker3D" parent="Turret"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.73, 0.74)
+
+[node name="RadarMast" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7, 0.7, -0.7)
+mesh = SubResource("BoxMesh_mast")
+surface_material_override/0 = SubResource("StandardMaterial3D_hull_gray")
+
+[node name="RadarPanel" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.7, 1.33, -0.7)
+mesh = SubResource("BoxMesh_radar_panel")
+surface_material_override/0 = SubResource("StandardMaterial3D_accent_blue")
+script = ExtResource("2_spin")
+spin_speed_deg = 60.0
 
 [node name="RangeIndicator" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)

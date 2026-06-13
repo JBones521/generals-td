@@ -1,21 +1,43 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=15 format=3]
 
 [ext_resource type="Script" path="res://scripts/tower.gd" id="1_tower"]
+[ext_resource type="Script" path="res://scripts/visual_spin.gd" id="2_spin"]
 
-[sub_resource type="CylinderMesh" id="CylinderMesh_base"]
+[sub_resource type="CylinderMesh" id="CylinderMesh_pad"]
 top_radius = 1.0
 bottom_radius = 1.0
-height = 0.5
+height = 0.25
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dark_blue"]
-albedo_color = Color(0.1, 0.2, 0.5, 1)
+[sub_resource type="TorusMesh" id="TorusMesh_pad_ring"]
+inner_radius = 0.85
+outer_radius = 0.95
 
-[sub_resource type="SphereMesh" id="SphereMesh_drone"]
-radius = 0.4
-height = 0.8
+[sub_resource type="BoxMesh" id="BoxMesh_post"]
+size = Vector3(0.3, 0.5, 0.3)
+
+[sub_resource type="SphereMesh" id="SphereMesh_body"]
+radius = 0.35
+height = 0.7
+
+[sub_resource type="BoxMesh" id="BoxMesh_sensor"]
+size = Vector3(0.12, 0.12, 0.25)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_rotor"]
+top_radius = 0.5
+bottom_radius = 0.5
+height = 0.04
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dark_metal"]
+albedo_color = Color(0.25, 0.27, 0.3, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hull_gray"]
+albedo_color = Color(0.75, 0.78, 0.8, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_white"]
-albedo_color = Color(0.95, 0.95, 0.95, 1)
+albedo_color = Color(0.92, 0.94, 0.95, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_accent_blue"]
+albedo_color = Color(0.15, 0.3, 0.55, 1)
 
 [sub_resource type="TorusMesh" id="TorusMesh_range"]
 resource_local_to_scene = true
@@ -33,15 +55,45 @@ radius = 8.0
 [node name="Tower" type="Node3D"]
 script = ExtResource("1_tower")
 
-[node name="Base" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
-mesh = SubResource("CylinderMesh_base")
-surface_material_override/0 = SubResource("StandardMaterial3D_dark_blue")
+[node name="Pad" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.125, 0)
+mesh = SubResource("CylinderMesh_pad")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_metal")
 
-[node name="Gun" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 0)
-mesh = SubResource("SphereMesh_drone")
+[node name="PadRing" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.26, 0)
+mesh = SubResource("TorusMesh_pad_ring")
+surface_material_override/0 = SubResource("StandardMaterial3D_accent_blue")
+
+[node name="ControlPost" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.85, 0.5, 0)
+mesh = SubResource("BoxMesh_post")
+surface_material_override/0 = SubResource("StandardMaterial3D_hull_gray")
+
+[node name="Turret" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+script = ExtResource("2_spin")
+spin_speed_deg = 0.0
+bob_amplitude = 0.15
+
+[node name="Body" type="MeshInstance3D" parent="Turret"]
+mesh = SubResource("SphereMesh_body")
 surface_material_override/0 = SubResource("StandardMaterial3D_white")
+
+[node name="Sensor" type="MeshInstance3D" parent="Turret"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.4)
+mesh = SubResource("BoxMesh_sensor")
+surface_material_override/0 = SubResource("StandardMaterial3D_accent_blue")
+
+[node name="Rotor" type="MeshInstance3D" parent="Turret"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+mesh = SubResource("CylinderMesh_rotor")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_metal")
+script = ExtResource("2_spin")
+spin_speed_deg = 720.0
+
+[node name="Muzzle" type="Marker3D" parent="Turret"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.53)
 
 [node name="RangeIndicator" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)

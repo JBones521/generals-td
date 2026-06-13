@@ -17,9 +17,14 @@ enum TargetingStrategy {
 var enemies_in_range: Array[Node3D] = []
 
 var _time_since_last_shot: float = 0.0
+var _current_target: Node3D = null
+var _turret: Node3D = null
+var _muzzle: Node3D = null
 
 
 func _ready() -> void:
+	_turret = get_node_or_null("Turret") as Node3D
+	_muzzle = get_node_or_null("Turret/Muzzle") as Node3D
 	if tower_data != null:
 		attack_range = tower_data.attack_range
 		fire_rate = tower_data.fire_rate
@@ -72,14 +77,15 @@ func _apply_range_to_detection_area() -> SphereShape3D:
 func _process(delta: float) -> void:
 	_time_since_last_shot += delta
 	_prune_invalid_enemies()
+	_current_target = _select_target()
+	if _turret != null and _current_target != null and is_instance_valid(_current_target):
+		var to_t := _current_target.global_position - _turret.global_position
+		_turret.rotation.y = lerp_angle(_turret.rotation.y, atan2(to_t.x, to_t.z), 8.0 * delta)
 	if _time_since_last_shot < 1.0 / fire_rate:
 		return
-	if enemies_in_range.is_empty():
+	if _current_target == null:
 		return
-	var target := _select_target()
-	if target == null:
-		return
-	_fire_at(target)
+	_fire_at(_current_target)
 	_time_since_last_shot = 0.0
 
 
@@ -133,7 +139,11 @@ func _fire_at(target: Node3D) -> void:
 
 
 func _show_tracer(target_pos: Vector3) -> void:
-	var gun_pos := global_position + Vector3(0, 2.5, 0)
+	var gun_pos: Vector3
+	if _muzzle != null:
+		gun_pos = _muzzle.global_position
+	else:
+		gun_pos = global_position + Vector3(0, 2.5, 0)
 	var tracer := MeshInstance3D.new()
 	tracer.top_level = true
 	var im := ImmediateMesh.new()

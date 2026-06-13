@@ -1,18 +1,27 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://scripts/tower.gd" id="1_tower"]
 
-[sub_resource type="BoxMesh" id="BoxMesh_base"]
-size = Vector3(3, 2, 3)
+[sub_resource type="BoxMesh" id="BoxMesh_wall"]
+size = Vector3(3, 0.7, 0.45)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dark_gray"]
-albedo_color = Color(0.25, 0.25, 0.28, 1)
+[sub_resource type="BoxMesh" id="BoxMesh_platform"]
+size = Vector3(2.2, 0.5, 2.2)
 
-[sub_resource type="BoxMesh" id="BoxMesh_gun"]
-size = Vector3(1, 1, 2)
+[sub_resource type="BoxMesh" id="BoxMesh_mount"]
+size = Vector3(0.6, 0.4, 0.6)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mid_gray"]
-albedo_color = Color(0.55, 0.55, 0.6, 1)
+[sub_resource type="BoxMesh" id="BoxMesh_cannon"]
+size = Vector3(0.35, 0.35, 2)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tan"]
+albedo_color = Color(0.6, 0.55, 0.4, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dark_olive"]
+albedo_color = Color(0.3, 0.32, 0.22, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dark_metal"]
+albedo_color = Color(0.25, 0.27, 0.3, 1)
 
 [sub_resource type="TorusMesh" id="TorusMesh_range"]
 resource_local_to_scene = true
@@ -30,15 +39,45 @@ radius = 7.0
 [node name="Tower" type="Node3D"]
 script = ExtResource("1_tower")
 
-[node name="Base" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-mesh = SubResource("BoxMesh_base")
-surface_material_override/0 = SubResource("StandardMaterial3D_dark_gray")
+[node name="WallNorth" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, -1.5)
+mesh = SubResource("BoxMesh_wall")
+surface_material_override/0 = SubResource("StandardMaterial3D_tan")
 
-[node name="Gun" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 0)
-mesh = SubResource("BoxMesh_gun")
-surface_material_override/0 = SubResource("StandardMaterial3D_mid_gray")
+[node name="WallSouth" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 1.5)
+mesh = SubResource("BoxMesh_wall")
+surface_material_override/0 = SubResource("StandardMaterial3D_tan")
+
+[node name="WallEast" type="MeshInstance3D" parent="."]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, 1.5, 0.35, 0)
+mesh = SubResource("BoxMesh_wall")
+surface_material_override/0 = SubResource("StandardMaterial3D_tan")
+
+[node name="WallWest" type="MeshInstance3D" parent="."]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -1.5, 0.35, 0)
+mesh = SubResource("BoxMesh_wall")
+surface_material_override/0 = SubResource("StandardMaterial3D_tan")
+
+[node name="Platform" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+mesh = SubResource("BoxMesh_platform")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_olive")
+
+[node name="Turret" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0)
+
+[node name="Mount" type="MeshInstance3D" parent="Turret"]
+mesh = SubResource("BoxMesh_mount")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_metal")
+
+[node name="Cannon" type="MeshInstance3D" parent="Turret"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0.9)
+mesh = SubResource("BoxMesh_cannon")
+surface_material_override/0 = SubResource("StandardMaterial3D_dark_metal")
+
+[node name="Muzzle" type="Marker3D" parent="Turret"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 1.9)
 
 [node name="RangeIndicator" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0)

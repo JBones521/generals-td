@@ -16,6 +16,16 @@ const _OWNED_META: String = "path_visualizer_owned"
 		line_height = value
 		_request_rebuild()
 
+@export var show_roads: bool = true:
+	set(value):
+		show_roads = value
+		_request_rebuild()
+
+@export var show_debug_lines: bool = false:
+	set(value):
+		show_debug_lines = value
+		_request_rebuild()
+
 
 func _ready() -> void:
 	_connect_path_signals()
@@ -39,7 +49,10 @@ func _rebuild() -> void:
 	for path in paths:
 		if path == null or path.waypoints.size() < 2:
 			continue
-		_build_line(path)
+		if show_roads:
+			_build_road(path)
+		if show_debug_lines:
+			_build_line(path)
 
 
 func _clear_owned_children() -> void:
@@ -59,6 +72,28 @@ func _disconnect_path_signals() -> void:
 	for path in paths:
 		if path != null and path.changed.is_connected(_request_rebuild):
 			path.changed.disconnect(_request_rebuild)
+
+
+func _build_road(path: PathData) -> void:
+	var material := StandardMaterial3D.new()
+	material.albedo_color = Color(0.45, 0.38, 0.28)
+	for i in range(1, path.waypoints.size()):
+		var a := path.waypoints[i - 1]
+		var b := path.waypoints[i]
+		var flat := Vector3(b.x - a.x, 0.0, b.z - a.z)
+		var seg_len := flat.length()
+		if seg_len < 0.001:
+			continue
+		var segment := MeshInstance3D.new()
+		segment.name = "Road_%s_%d" % [path.path_name if path.path_name != "" else "unnamed", i]
+		segment.set_meta(_OWNED_META, true)
+		var box := BoxMesh.new()
+		box.size = Vector3(2.5, 0.05, seg_len)
+		box.material = material
+		segment.mesh = box
+		add_child(segment)
+		segment.position = Vector3((a.x + b.x) * 0.5, 0.03, (a.z + b.z) * 0.5)
+		segment.rotation.y = atan2(flat.x, flat.z)
 
 
 func _build_line(path: PathData) -> void:

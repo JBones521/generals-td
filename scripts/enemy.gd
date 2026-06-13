@@ -102,6 +102,7 @@ func _physics_process(delta: float) -> void:
 		var direction := to_target / distance
 		velocity = direction * move_speed
 		velocity.y = 0.0
+		rotation.y = lerp_angle(rotation.y, atan2(direction.x, direction.z), 10.0 * delta)
 		move_and_slide()
 
 	global_position.y = 1.0

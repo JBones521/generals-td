@@ -13,6 +13,7 @@
 [ext_resource type="Resource" path="res://scenes/units/towers/patriot.tres" id="12_patriot"]
 [ext_resource type="Resource" path="res://scenes/units/towers/sentry_drone.tres" id="13_sentry"]
 [ext_resource type="Resource" path="res://scenes/units/towers/fire_base.tres" id="14_firebase"]
+[ext_resource type="Script" path="res://scripts/visual_spin.gd" id="15_spin"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sky"]
 
@@ -31,14 +32,41 @@ size = Vector2(40, 40)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_green"]
 albedo_color = Color(0.2, 0.6, 0.2, 1)
 
-[sub_resource type="BoxMesh" id="BoxMesh_2x2x2"]
-size = Vector3(2, 2, 2)
+[sub_resource type="BoxMesh" id="BoxMesh_cc_main"]
+size = Vector3(3, 1.5, 2.5)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_blue"]
-albedo_color = Color(0.2, 0.4, 0.9, 1)
+[sub_resource type="BoxMesh" id="BoxMesh_cc_trim"]
+size = Vector3(3.2, 0.2, 2.7)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_red"]
-albedo_color = Color(0.9, 0.2, 0.2, 1)
+[sub_resource type="BoxMesh" id="BoxMesh_cc_pole"]
+size = Vector3(0.12, 1, 0.12)
+
+[sub_resource type="BoxMesh" id="BoxMesh_cc_dish"]
+size = Vector3(1, 0.06, 0.15)
+
+[sub_resource type="BoxMesh" id="BoxMesh_gate_pillar"]
+size = Vector3(0.5, 2, 0.5)
+
+[sub_resource type="BoxMesh" id="BoxMesh_gate_crossbar"]
+size = Vector3(0.5, 0.4, 3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_gate_banner"]
+size = Vector3(0.06, 1, 0.8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_usa_white"]
+albedo_color = Color(0.92, 0.94, 0.95, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_usa_blue"]
+albedo_color = Color(0.15, 0.3, 0.55, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_usa_gray"]
+albedo_color = Color(0.75, 0.78, 0.8, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_china_dark_metal"]
+albedo_color = Color(0.2, 0.2, 0.22, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_china_red"]
+albedo_color = Color(0.7, 0.12, 0.1, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ground"]
 size = Vector3(40, 0.1, 40)
@@ -68,15 +96,53 @@ transform = Transform3D(1, 0, 0, 0, 0.573576, -0.819152, 0, 0.819152, 0.573576, 
 light_energy = 1.2
 shadow_enabled = true
 
-[node name="PlayerBase" type="MeshInstance3D" parent="." unique_id=81988255]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 1, 0)
-mesh = SubResource("BoxMesh_2x2x2")
-surface_material_override/0 = SubResource("StandardMaterial3D_blue")
+[node name="PlayerBase" type="Node3D" parent="." unique_id=81988255]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15, 0, 0)
 
-[node name="EnemySpawn" type="MeshInstance3D" parent="." unique_id=655598335]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 1, 0)
-mesh = SubResource("BoxMesh_2x2x2")
-surface_material_override/0 = SubResource("StandardMaterial3D_red")
+[node name="MainBuilding" type="MeshInstance3D" parent="PlayerBase"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+mesh = SubResource("BoxMesh_cc_main")
+surface_material_override/0 = SubResource("StandardMaterial3D_usa_white")
+
+[node name="RoofTrim" type="MeshInstance3D" parent="PlayerBase"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, 0)
+mesh = SubResource("BoxMesh_cc_trim")
+surface_material_override/0 = SubResource("StandardMaterial3D_usa_blue")
+
+[node name="RadarPole" type="MeshInstance3D" parent="PlayerBase"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2, 0)
+mesh = SubResource("BoxMesh_cc_pole")
+surface_material_override/0 = SubResource("StandardMaterial3D_usa_gray")
+
+[node name="RadarDish" type="MeshInstance3D" parent="PlayerBase"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.73, 0)
+mesh = SubResource("BoxMesh_cc_dish")
+surface_material_override/0 = SubResource("StandardMaterial3D_usa_gray")
+script = ExtResource("15_spin")
+spin_speed_deg = 45.0
+
+[node name="EnemySpawn" type="Node3D" parent="." unique_id=655598335]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, 0)
+
+[node name="PillarLeft" type="MeshInstance3D" parent="EnemySpawn"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -1.2)
+mesh = SubResource("BoxMesh_gate_pillar")
+surface_material_override/0 = SubResource("StandardMaterial3D_china_dark_metal")
+
+[node name="PillarRight" type="MeshInstance3D" parent="EnemySpawn"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1.2)
+mesh = SubResource("BoxMesh_gate_pillar")
+surface_material_override/0 = SubResource("StandardMaterial3D_china_dark_metal")
+
+[node name="Crossbar" type="MeshInstance3D" parent="EnemySpawn"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+mesh = SubResource("BoxMesh_gate_crossbar")
+surface_material_override/0 = SubResource("StandardMaterial3D_china_dark_metal")
+
+[node name="Banner" type="MeshInstance3D" parent="EnemySpawn"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0)
+mesh = SubResource("BoxMesh_gate_banner")
+surface_material_override/0 = SubResource("StandardMaterial3D_china_red")
 
 [node name="EnemySpawner" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, 0)
