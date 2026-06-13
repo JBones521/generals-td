@@ -1,5 +1,5 @@
 class_name SupplyCenter
-extends Node3D
+extends Building
 
 const DELIVERY_AMOUNT: int = 120
 const CYCLE_TIME: float = 12.0

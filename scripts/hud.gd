@@ -13,12 +13,18 @@ extends Control
 @onready var build_hint_label: Label = $BuildHintLabel
 @onready var next_wave_label: Label = $NextWaveLabel
 @onready var tower_row: HBoxContainer = $TowerRow
+@onready var tower_info_panel: PanelContainer = $TowerInfoPanel
+@onready var info_title_label: Label = $TowerInfoPanel/VBox/TitleLabel
+@onready var info_stats_label: Label = $TowerInfoPanel/VBox/StatsLabel
+@onready var info_upgrade_label: Label = $TowerInfoPanel/VBox/UpgradeLabel
+@onready var info_sell_label: Label = $TowerInfoPanel/VBox/SellLabel
 
 var build_manager: BuildManager
 var wave_manager: WaveManager
 
 var _selected_tower_data: PlaceableData = null
 var _countdown_remaining: float = 0.0
+var _info_tower: Tower = null
 
 
 func _ready() -> void:
@@ -33,6 +39,7 @@ func _ready() -> void:
 	if build_manager != null:
 		build_manager.tower_selected_changed.connect(_on_tower_selected_changed)
 		build_manager.buildings_changed.connect(_on_buildings_changed)
+		build_manager.tower_selection_changed.connect(_on_tower_selection_changed)
 	else:
 		push_error("[HUD] build_manager could not be resolved from path: %s" % build_manager_path)
 	if not wave_manager_path.is_empty():
@@ -66,6 +73,8 @@ func _on_enemies_remaining_changed(count: int) -> void:
 func _on_credits_changed(amount: int) -> void:
 	credits_label.text = "Credits: %d" % amount
 	_refresh_tower_labels()
+	if tower_info_panel != null and tower_info_panel.visible:
+		_refresh_tower_info_panel()
 
 
 func _on_state_changed(_new_state: int) -> void:
@@ -78,6 +87,8 @@ func _on_wave_started(_wave_index: int, _total_waves: int) -> void:
 	_refresh_wave_label()
 	_refresh_status_label()
 	_refresh_next_wave_label()
+	if tower_info_panel != null and tower_info_panel.visible:
+		_refresh_tower_info_panel()
 
 
 func _on_wave_completed(_wave_index: int) -> void:
@@ -188,6 +199,39 @@ func _refresh_tower_labels() -> void:
 func _on_buildings_changed() -> void:
 	_refresh_tower_labels()
 	_refresh_income_label()
+
+
+func _on_tower_selection_changed(tower) -> void:
+	_info_tower = tower
+	_refresh_tower_info_panel()
+
+
+func _refresh_tower_info_panel() -> void:
+	if tower_info_panel == null:
+		return
+	if _info_tower == null or not is_instance_valid(_info_tower):
+		tower_info_panel.visible = false
+		return
+	tower_info_panel.visible = true
+	var t: Tower = _info_tower
+	info_title_label.text = "%s — Tier %d" % [t.tower_name, t.tier]
+	info_stats_label.text = "DMG %.1f | RNG %.1f | ROF %.1f/s" % [t.damage, t.attack_range, t.fire_rate]
+	if t.tier == 1:
+		var txt := "U: Upgrade to T2 (%dc)" % t.get_upgrade_cost()
+		if GameState.current_wave_index < 4:
+			txt += " (unlocks wave 5)"
+		info_upgrade_label.text = txt
+	elif t.tier == 2:
+		var txt := "U: Upgrade to T3 (%dc)" % t.get_upgrade_cost()
+		var gated: bool = GameState.current_wave_index < 9
+		if build_manager == null or not build_manager.has_building("usa_strategy_center"):
+			gated = true
+		if gated:
+			txt += " (wave 10 + Strategy Center)"
+		info_upgrade_label.text = txt
+	else:
+		info_upgrade_label.text = "Max tier"
+	info_sell_label.text = "S: Sell (+%dc)" % int(round(t.total_invested * 0.75))
 
 
 func _refresh_income_label() -> void:

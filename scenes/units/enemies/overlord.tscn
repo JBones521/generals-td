@@ -33,7 +33,7 @@ albedo_color = Color(0.7, 0.12, 0.1, 1)
 size = Vector3(3.2, 2, 4.4)
 
 [sub_resource type="BoxMesh" id="BoxMesh_hpbar"]
-size = Vector3(1.6, 0.1, 0.05)
+size = Vector3(1, 0.1, 0.05)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hpbar_bg"]
 shading_mode = 0
@@ -95,7 +95,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_red")
 shape = SubResource("BoxShape3D_enemy")
 
 [node name="HealthBar" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0)
+transform = Transform3D(1.6, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3, 0)
 visible = false
 
 [node name="Background" type="MeshInstance3D" parent="HealthBar"]

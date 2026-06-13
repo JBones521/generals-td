@@ -3,6 +3,7 @@ extends Node3D
 
 signal tower_selected_changed(placeable_data)
 signal buildings_changed
+signal tower_selection_changed(tower)
 
 @export var available_towers: Array[TowerData] = []
 @export var available_buildings: Array[BuildingData] = []
@@ -15,6 +16,7 @@ var selected_placeable: PlaceableData = null
 var preview_instance: Node3D = null
 var placed_towers: Array[Tower] = []
 var placed_buildings: Array[Node3D] = []
+var selected_tower: Tower = null
 
 var _preview_indicator_material: StandardMaterial3D
 
@@ -34,14 +36,29 @@ func _unhandled_input(event: InputEvent) -> void:
 			KEY_4:
 				if available_buildings.size() >= 1:
 					_select_placeable(available_buildings[0])
+			KEY_5:
+				if available_buildings.size() >= 2:
+					_select_placeable(available_buildings[1])
+			KEY_U:
+				_try_upgrade_selected()
+			KEY_S:
+				_try_sell_selected()
 			KEY_ESCAPE:
 				if preview_instance != null:
 					_cancel_placement()
+				elif selected_tower != null:
+					_deselect_tower()
 	elif event is InputEventMouseButton and event.pressed:
-		if event.button_index == MOUSE_BUTTON_LEFT and preview_instance != null:
-			_try_place()
-		elif event.button_index == MOUSE_BUTTON_RIGHT and preview_instance != null:
-			_cancel_placement()
+		if event.button_index == MOUSE_BUTTON_LEFT:
+			if preview_instance != null:
+				_try_place()
+			else:
+				_handle_select_click()
+		elif event.button_index == MOUSE_BUTTON_RIGHT:
+			if preview_instance != null:
+				_cancel_placement()
+			elif selected_tower != null:
+				_deselect_tower()
 
 
 func _process(_delta: float) -> void:
@@ -78,9 +95,97 @@ func count_placed_buildings(id: String) -> int:
 	return count
 
 
+func has_building(id: String) -> bool:
+	for b in placed_buildings:
+		if not is_instance_valid(b):
+			continue
+		var building := b as Building
+		if building != null and building.building_data != null and building.building_data.placeable_id == id:
+			return true
+		if b.get_meta("placeable_id", "") == id:
+			return true
+	return false
+
+
+func is_upgrade_allowed(tower: Tower) -> bool:
+	if tower == null or tower.tier >= 3:
+		return false
+	if tower.tier == 1:
+		return GameState.current_wave_index >= 4
+	return GameState.current_wave_index >= 9 and has_building("usa_strategy_center")
+
+
+func _handle_select_click() -> void:
+	var hit = _raycast_to_ground()
+	if hit == null:
+		_deselect_tower()
+		return
+	var nearest: Tower = null
+	var nearest_d: float = 1.8
+	for t in placed_towers:
+		if not is_instance_valid(t) or t.is_queued_for_deletion():
+			continue
+		var d: float = t.global_position.distance_to(hit)
+		if d <= nearest_d:
+			nearest_d = d
+			nearest = t
+	if nearest == null:
+		_deselect_tower()
+		return
+	_select_tower_instance(nearest)
+
+
+func _select_tower_instance(tower: Tower) -> void:
+	_cancel_placement()
+	if selected_tower == tower:
+		return
+	_deselect_tower()
+	selected_tower = tower
+	tower.set_range_indicator_visible(true)
+	tower_selection_changed.emit(tower)
+
+
+func _deselect_tower() -> void:
+	if selected_tower == null:
+		return
+	if is_instance_valid(selected_tower):
+		selected_tower.set_range_indicator_visible(selected_tower.show_range_indicator)
+	selected_tower = null
+	tower_selection_changed.emit(null)
+
+
+func _try_upgrade_selected() -> void:
+	if selected_tower == null or not is_instance_valid(selected_tower):
+		return
+	if selected_tower.tier >= 3 or not is_upgrade_allowed(selected_tower):
+		return
+	var cost: int = selected_tower.get_upgrade_cost()
+	if cost < 0 or not GameState.spend_credits(cost):
+		return
+	selected_tower.upgrade()
+	tower_selection_changed.emit(selected_tower)
+	if GameState.DEBUG_LOGGING:
+		print("[BuildManager] upgraded %s to tier %d (cost=%d)" % [selected_tower.tower_name, selected_tower.tier, cost])
+
+
+func _try_sell_selected() -> void:
+	if selected_tower == null or not is_instance_valid(selected_tower):
+		return
+	var refund: int = int(round(selected_tower.total_invested * 0.75))
+	GameState.add_credits(refund)
+	placed_towers.erase(selected_tower)
+	var sold := selected_tower
+	selected_tower = null
+	sold.queue_free()
+	tower_selection_changed.emit(null)
+	if GameState.DEBUG_LOGGING:
+		print("[BuildManager] sold %s (refund=%d)" % [sold.tower_name, refund])
+
+
 func _select_placeable(pd: PlaceableData) -> void:
 	if pd == null:
 		return
+	_deselect_tower()
 	_cancel_placement()
 	selected_placeable = pd
 	_create_preview(pd)
@@ -111,12 +216,12 @@ func _create_preview(pd: PlaceableData) -> void:
 	var tower_preview := preview as Tower
 	if tower_preview != null:
 		tower_preview.tower_data = pd as TowerData
+		tower_preview.show_range_indicator = true
 	var hit = _raycast_to_ground()
 	if hit != null:
 		preview.position = hit
 	add_child(preview)
-	preview.set_process(false)
-	preview.set_physics_process(false)
+	preview.process_mode = Node.PROCESS_MODE_DISABLED
 	var area := preview.get_node_or_null("DetectionArea") as Area3D
 	if area != null:
 		area.monitoring = false
@@ -212,6 +317,10 @@ func _try_place() -> void:
 	var tower := instance as Tower
 	if tower != null:
 		tower.tower_data = pd as TowerData
+		tower.total_invested = cost
+	var building := instance as Building
+	if building != null:
+		building.building_data = pd as BuildingData
 	instance.position = pos
 	instance.set_meta("placeable_id", pd.placeable_id)
 	add_child(instance)

@@ -16,6 +16,7 @@
 [ext_resource type="Script" path="res://scripts/visual_spin.gd" id="15_spin"]
 [ext_resource type="Script" path="res://scripts/building_data.gd" id="16_bd"]
 [ext_resource type="Resource" path="res://scenes/units/buildings/supply_center.tres" id="17_sc"]
+[ext_resource type="Resource" path="res://scenes/units/buildings/strategy_center.tres" id="18_stc"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_sky"]
 
@@ -159,7 +160,7 @@ spawner_path = NodePath("../EnemySpawner")
 [node name="BuildManager" type="Node3D" parent="."]
 script = ExtResource("10_bm")
 available_towers = Array[ExtResource("11_td")]([ExtResource("12_patriot"), ExtResource("13_sentry"), ExtResource("14_firebase")])
-available_buildings = Array[ExtResource("16_bd")]([ExtResource("17_sc")])
+available_buildings = Array[ExtResource("16_bd")]([ExtResource("17_sc"), ExtResource("18_stc")])
 paths = Array[ExtResource("2_uvc87")]([ExtResource("2_patha"), ExtResource("3_pathb")])
 
 [node name="HUD" parent="." instance=ExtResource("9_hud")]

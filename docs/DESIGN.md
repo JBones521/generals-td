@@ -450,6 +450,8 @@ Player must compose layered defense
 T1 (placed) → T2 (+25% damage/range, 75% cost) → T3 (unique mechanic, same cost as T2)
 T2 unlocks after wave 5, T3 after wave 10 + tech building (Strategy Center / Propaganda Center / Palace)
 
+Implemented Step 10a. Deviation: Sentry T3 grants a second drone (+100% fire rate) until stealth enemies exist; stealth detection will be added to Sentry T3 alongside the stealth mechanic. Sell refunds 75% of total invested.
+
 ### Development Roadmap
 
 Step 8: Playability (health bars, 15 waves, early-start bonus) — DONE

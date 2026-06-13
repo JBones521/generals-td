@@ -11,10 +11,13 @@ enum TargetingStrategy {
 @export var attack_range: float = 10.0
 @export var fire_rate: float = 1.0
 @export var damage: float = 10.0
-@export var show_range_indicator: bool = true
+@export var show_range_indicator: bool = false
 @export var targeting_strategy: TargetingStrategy = TargetingStrategy.MOST_PROGRESSED
 
 var enemies_in_range: Array[Node3D] = []
+var tier: int = 1
+var total_invested: int = 0
+var t3_splash: bool = false
 
 var _time_since_last_shot: float = 0.0
 var _current_target: Node3D = null
@@ -41,6 +44,74 @@ func _ready() -> void:
 		var torus_outer: float = torus.outer_radius if torus != null else -1.0
 		var sphere_radius: float = sphere.radius if sphere != null else -1.0
 		print("[Tower] ", tower_name, " attack_range=", attack_range, " torus_outer=", torus_outer, " sphere_radius=", sphere_radius)
+
+
+func get_upgrade_cost() -> int:
+	if tier >= 3 or tower_data == null:
+		return -1
+	return int(round(tower_data.cost * 0.75))
+
+
+func upgrade() -> void:
+	if tier >= 3:
+		return
+	var cost := get_upgrade_cost()
+	tier += 1
+	if tier == 2:
+		damage *= 1.25
+		attack_range *= 1.25
+		_apply_range_to_indicator()
+		_apply_range_to_detection_area()
+	elif tier == 3:
+		_apply_t3_effect()
+	if cost > 0:
+		total_invested += cost
+	_add_tier_chevron()
+
+
+func _apply_t3_effect() -> void:
+	if tower_data == null:
+		return
+	match tower_data.placeable_id:
+		"usa_patriot":
+			t3_splash = true
+		"usa_firebase":
+			damage += 20.0
+		"usa_sentry":
+			fire_rate *= 2.0
+			_add_second_drone()
+
+
+func _add_tier_chevron() -> void:
+	var chevron := MeshInstance3D.new()
+	chevron.name = "TierChevron%d" % tier
+	var box := BoxMesh.new()
+	box.size = Vector3(0.3, 0.08, 0.3)
+	var mat := StandardMaterial3D.new()
+	mat.albedo_color = Color(0.15, 0.3, 0.55)
+	box.material = mat
+	chevron.mesh = box
+	chevron.position = Vector3(0, 0.1 if tier == 2 else 0.22, 2.0)
+	add_child(chevron)
+
+
+func _add_second_drone() -> void:
+	if _turret == null:
+		return
+	var clone := Node3D.new()
+	clone.name = "SecondDrone"
+	clone.position = Vector3(0.7, 0, 0)
+	for child in _turret.get_children():
+		if child is MeshInstance3D:
+			var copy := child.duplicate()
+			clone.add_child(copy)
+	_turret.add_child(clone)
+
+
+func set_range_indicator_visible(vis: bool) -> void:
+	var indicator := get_node_or_null("RangeIndicator") as MeshInstance3D
+	if indicator != null:
+		indicator.visible = vis
 
 
 func _apply_range_to_indicator() -> TorusMesh:
@@ -135,7 +206,29 @@ func _fire_at(target: Node3D) -> void:
 		print("[Tower] ", name, " (", tower_name, ") firing at ", target.name, " at ", target_pos, " damage=", dmg)
 	if target.has_method("take_damage"):
 		target.take_damage(dmg)
+	if t3_splash:
+		_apply_splash(target, target_pos)
 	_show_tracer(target_pos)
+
+
+func _apply_splash(primary: Node3D, target_pos: Vector3) -> void:
+	for e in enemies_in_range:
+		if e == primary:
+			continue
+		if not is_instance_valid(e) or e.is_queued_for_deletion():
+			continue
+		if e.global_position.distance_to(target_pos) > 2.0:
+			continue
+		var splash_dmg: float = damage * 0.5
+		var splash_enemy := e as Enemy
+		if tower_data != null and splash_enemy != null:
+			match splash_enemy.enemy_type:
+				"infantry":
+					splash_dmg = damage * tower_data.damage_vs_infantry_mult * 0.5
+				"vehicle":
+					splash_dmg = damage * tower_data.damage_vs_vehicle_mult * 0.5
+		if e.has_method("take_damage"):
+			e.take_damage(splash_dmg)
 
 
 func _show_tracer(target_pos: Vector3) -> void:
