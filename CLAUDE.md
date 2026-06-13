@@ -28,4 +28,4 @@ DESIGN.md has been expanded with v2 — survival mode focus, full Generals unit 
 - Always `git pull` at the start of a session.
 
 ## Current Status
-Project initialized, empty. No scenes built yet. Next step: basic test scene to verify pipeline.
+Steps 1-8 complete: full core loop playable. Branching paths, three USA towers, two China enemies with damage-type modifiers, click-to-place with validation, economy (credits/bounties/stipends), 15-wave progression with mixed compositions, enemy health bars, early-start bonus with countdown, next-wave preview, restart flow. Towers target the enemy furthest along its path. Debug logging gated behind GameState.DEBUG_LOGGING. Next: Step 9 — Supply Center economy rework per DESIGN.md v2.

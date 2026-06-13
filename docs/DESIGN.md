@@ -289,7 +289,136 @@ Generals TD is not "Kingdom Rush with C&C aesthetics." It is the Generals surviv
 
 Every Generals unit gets a role: defensive tower, economy building, enemy, hero, Generals' Power, or decorative set dressing. Detailed roster:
 
-[paste the full USA / China / GLA tower rosters, economy buildings, Generals' Powers, and enemy units sections from the previous chat response]
+#### USA — High-Tech Linked Defense
+Power model: SOFT requirement. Cold Fusion Reactor (600c, +5 power). Underpowered towers fire at -25% rate (never shut off).
+
+Economy buildings:
+| Building | Cost | Effect |
+|---|---|---|
+| Supply Center | 800 | Chinook every 12s; +60 credits/sec (max 3) |
+| Cold Fusion Reactor | 600 | +5 power capacity |
+| Strategy Center | 1500 | Tech building — unlocks T2/T3; +10/sec passive |
+| Detention Camp | 1000 | -10% cost on all future towers |
+
+Towers:
+| Tower | Cost | Range | Fire rate | Damage | Notes |
+|---|---|---|---|---|---|
+| Patriot Missile System | 75 | 10 | 1.0/s | 12 | 0.5× vs infantry, 1.5× vs vehicles. Patriots within 8 units share targeting (instant lock). |
+| Sentry Drone Pad | 50 | 8 | 3.0/s | 4 | 1.5× vs infantry, 0.6× vs vehicles. Detects stealth. |
+| Fire Base | 120 | 7 | 0.5/s | 35 | 1.0× both. T3: holds 4 virtual infantry, +5 damage each. |
+| Avenger | 150 | 9 | 2.0/s | 8 | Anti-air specialist; intercepts enemy projectiles. |
+| Tomahawk Storm | 200 | 18 | 0.3/s | 50 splash | 3-unit splash artillery. Requires Strategy Center for T3. |
+
+Generals' Powers:
+| Power | Cooldown | Effect |
+|---|---|---|
+| Spy Drone | 60s | Reveals stealth in 8-radius for 30s |
+| Paradrop | 90s | 5 friendly Rangers auto-attack nearby enemies, 30s |
+| A-10 Strike | 120s | Bomb run on target line, 30 damage, 6-unit radius |
+| Carpet Bomb | 180s | 60 damage, 10-unit radius |
+| Particle Cannon | 600s | Superweapon (requires Strategy Center). Beam sweeps line 10s, 200 dmg/s |
+
+#### China — Concentration of Fire
+Power model: HARD requirement. Nuclear Reactor (800c, +10 power, explodes on death: 50 damage to towers in 5-unit radius). Underpowered towers fully shut off.
+
+Economy buildings:
+| Building | Cost | Effect |
+|---|---|---|
+| Supply Center | 1000 | +50 credits/sec |
+| Nuclear Reactor | 800 | +10 power; dangerous on death |
+| Hacker Hut | 700 | +20 credits/sec; spawns decorative hacker |
+| Propaganda Center | 1500 | Tech building — unlocks T2/T3; +20% Speaker Tower radii |
+| Internet Center | 2000 | +50 credits/sec; low HP, high-risk economy |
+
+Towers:
+| Tower | Cost | Range | Fire rate | Damage | Notes |
+|---|---|---|---|---|---|
+| Gatling Cannon | 60 | 7 | 4.0/s (2s spin-up) | 3 | Anti-infantry/air, detects stealth. Horde bonus: +25% fire rate with 2+ Gatlings within 5 units. |
+| Bunker | 50 | 6 | 1.5/s | 6 | Garrisonable. T3: 5 infantry, +4 damage each. |
+| Speaker Tower | 120 | — | — | — | Buff: towers within 6 units gain +30% fire rate. |
+| Inferno Cannon | 180 | 8 | 0.6/s | 8 + 4/s DOT 5s | 3-unit splash. Devastating vs grouped infantry. |
+| Nuke Cannon | 250 | 20 | 0.2/s | 80 splash | 5-unit radius siege. T3: radiation 5/s DOT for 8s. |
+
+Generals' Powers:
+| Power | Cooldown | Effect |
+|---|---|---|
+| Cash Hack | 60s | Instant +200 credits |
+| Cluster Mines | 90s | 8 mines on path segment, 25 damage each |
+| Artillery Barrage | 120s | 8 shells over 5s, 15 damage each, 4-unit radius |
+| EMP Pulse | 150s | Disables vehicle enemies in 8-radius for 8s |
+| Frenzy | 180s | Towers in 10-radius +50% fire rate for 15s |
+| Nuclear Carpet Bomb | 240s | 80 damage area + 10/s DOT for 10s |
+| Nuclear Missile | 600s | Superweapon (requires Propaganda Center). 300 damage, 15-unit radius, radiation |
+
+#### GLA — Stealthy Asymmetric Survival
+Power model: NONE. No power infrastructure at all.
+
+Economy buildings:
+| Building | Cost | Effect |
+|---|---|---|
+| Supply Stash | 600 | +40 credits/sec; up to 5 stashes (other factions cap at 3 Supply Centers) |
+| Black Market | 1200 | +25 credits/sec + one-time upgrades (e.g. "Arm The Mob": +30% damage to anti-infantry towers) |
+| Palace | 1500 | Tech building — unlocks T2/T3. Garrisonable. |
+| Arms Dealer | 1000 | Decorative; small cost reduction on Stinger Sites |
+
+Towers:
+| Tower | Cost | Range | Fire rate | Damage | Notes |
+|---|---|---|---|---|---|
+| Stinger Site | 70 | 9 | 1.5/s | 10 | Infantry-operated; enemies with snipe capability disable temporarily. |
+| Tunnel Network | 100 | — | — | — | Garrisonable; can spawn Rebel Ambush at another tunnel. |
+| Demo Trap | 40 | — | — | 60 | Stealthed proximity mine; 15s rearm cooldown. |
+| Toxin Trap | 90 | 4 AOE | — | 3/s DOT | Camouflaged. T3: stronger toxin + slow. |
+| SCUD Launcher | 220 | 22 | 0.15/s | 70 splash | 4-unit radius artillery. |
+
+Signature mechanics:
+- Building Holes: destroyed GLA tower leaves a hole (10 HP). If the hole survives 30s, the tower auto-rebuilds at 50% cost.
+- Salvage: kills near GLA towers drop salvage; every 3 salvage = random tower +10% damage permanently (max +50%).
+
+Generals' Powers:
+| Power | Cooldown | Effect |
+|---|---|---|
+| Rebel Ambush | 60s | 4 Rebels at target point, 30s |
+| Cash Bounty | 90s | +50% kill bounties for 30s |
+| Sneak Attack | 120s | Builds Tunnel Network anywhere instantly |
+| Emergency Repair | 120s | Towers in 6-radius restored to full HP |
+| Anthrax Bomb | 150s | Toxic cloud 6/s DOT for 20s, 8-radius |
+| GPS Scrambler | 180s | Stealths all friendly towers 30s |
+| SCUD Storm | 600s | Superweapon (requires Palace). 8 missiles, 50 damage each + toxin aftermath |
+
+#### Enemy Roster (baseline stats; multiplied by wave health/speed modifiers)
+
+Infantry:
+| Unit | Faction | HP | Speed | Dmg to base | Bounty | Notes |
+|---|---|---|---|---|---|---|
+| Red Guard | China | 12 | 6 | 1 | 3 | In game |
+| Ranger | USA | 15 | 5 | 1 | 4 | |
+| Rebel | GLA | 10 | 7 | 1 | 3 | |
+| RPG Trooper | GLA | 18 | 4 | 2 | 5 | |
+| Tank Hunter | China | 20 | 4 | 2 | 5 | |
+| Terrorist | GLA | 8 | 8 | 5 | 2 | Suicide burst damage on reach |
+
+Vehicles:
+| Unit | Faction | HP | Speed | Dmg to base | Bounty | Notes |
+|---|---|---|---|---|---|---|
+| Battlemaster Tank | China | 40 | 3 | 2 | 8 | In game |
+| Crusader | USA | 50 | 3.5 | 2 | 10 | |
+| Scorpion | GLA | 30 | 4 | 2 | 7 | |
+| Technical | GLA | 22 | 7 | 1 | 5 | Fast |
+| Overlord Tank | China | 120 | 2 | 5 | 25 | Heavy, rare |
+| Paladin | USA | 80 | 2.5 | 4 | 18 | |
+
+Aircraft (fly over obstacles, ignore ground-only towers):
+| Unit | Faction | HP | Speed | Dmg to base | Bounty |
+|---|---|---|---|---|---|
+| MiG | China | 35 | 9 | 3 | 12 |
+| Comanche | USA | 30 | 8 | 3 | 10 |
+| Helix | China | 60 | 5 | 4 | 15 |
+
+GLA has no aircraft (historical accuracy preserved).
+
+Heroes/Bosses (milestone waves): Black Lotus (China — temporarily disables a tower), Jarmen Kell (GLA — snipes tower operators from outside range), Colonel Burton (USA — plants explosives on towers).
+
+Decorative buildings (map set dressing): USA — Command Center, War Factory, Airfield with parked Raptors. China — Command Center, War Factory, Airfield with MiGs, Nuclear Missile Silo. GLA — Command Center, tunnel entrances, Arms Dealer, Black Market tents.
 
 ### Economy System
 
@@ -320,7 +449,7 @@ T2 unlocks after wave 5, T3 after wave 10 + tech building (Strategy Center / Pro
 
 ### Development Roadmap
 
-Step 8: Playability (health bars, 15 waves, early-start bonus) — SPECIFIED, NOT YET BUILT
+Step 8: Playability (health bars, 15 waves, early-start bonus) — DONE
 Step 9: Economy rework (Supply Centers replace flat wave stipend)
 Step 10: Tower variety expansion (Avenger, Tomahawk; first aircraft enemy; T2/T3 upgrades)
 Step 11: Generals' Powers (A-10 Strike, Spy Drone, HUD power buttons)
